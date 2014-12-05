@@ -39,6 +39,24 @@ class Player
         position.y -= yVel;
       }
       velocity.y = 0;
+      float friction = 0.1; 
+      int x = (int)(position.x/blockSize);
+      int y = (int)((position.y + hitbox.y)/blockSize);
+      if (y+2 > blocks[0].length) friction = 3;
+      else if (blocks[x][y] != null && blocks[x+1][y] != null)
+      {
+        friction = (blocks[x][y].getFriction() + blocks[x+1][y].getFriction())/2;
+      }
+      else if (blocks[x][y] != null)
+      {
+        friction = blocks[x][y].getFriction();
+      }
+      else if (blocks[x+1][y] != null)
+      {
+        friction = blocks[x+1][y].getFriction();
+      }
+      if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
+      else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
     }
     //add gravity
     velocity.add(acceleration);
