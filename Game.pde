@@ -64,9 +64,9 @@ void keyPressed()
   }
   else if (key == 'w' || key == 'W')
   {
-    int mx = (int)(mouseX/blockSize);
-    int my = (int)(mouseY/blockSize);
-    if (my+2 < blocks[0].length && (blocks[mx][my+2] != null || blocks[mx+1][my+2] != null))
+    int px = (int)(player.getLocation().x/blockSize);
+    int py = (int)(player.getLocation().y/blockSize);
+    if (py+2 >= blocks[0].length || (blocks[px][py+2] != null || (px+1 < blocks.length ? blocks[px+1][py+2] != null : false)))
     {
       player.setVSpeed(-7);
     }
