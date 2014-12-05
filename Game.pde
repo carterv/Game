@@ -10,8 +10,9 @@ boolean mouseL, mouseR;
 
 void setup()
 {
-  //window and background color
+  //window options
   size(1000,600);
+  frameRate(30);
   
   //draw options
   noStroke();
