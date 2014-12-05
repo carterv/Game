@@ -20,7 +20,7 @@ void setup()
   blockSize = 20;
   playerHeight = 1.8*blockSize;
   playerWidth = blockSize;
-  backgroundColor = 0;
+  backgroundColor = color(0,128);
   
   //input variables
   mouseL = mouseR = moveL = moveR = false;
@@ -32,7 +32,8 @@ void setup()
 
 void draw()
 {
-  background(backgroundColor);
+  fill(backgroundColor);
+  rect(0,0,width,height);
 
   //check input
   doInput();
@@ -136,10 +137,10 @@ void doInput()
   }
   if (moveL)
   {
-    player.setHSpeed(-5);
+    player.setHSpeed(-4);
   }
   else if (moveR)
   {
-    player.setHSpeed(5);
+    player.setHSpeed(4);
   }
 }

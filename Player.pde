@@ -29,7 +29,8 @@ class Player
       }
       velocity.x = 0;
     }
-    //try verticle movement
+    //try vertical movement
+    float friction = .25; 
     if (abs(yVel) >= 1) position.y += yVel;
     if (collided() && yVel != 0)
     {
@@ -39,7 +40,7 @@ class Player
         position.y -= yVel;
       }
       velocity.y = 0;
-      float friction = 0.1; 
+      //calculate friction
       int x = (int)(position.x/blockSize);
       int y = (int)((position.y + hitbox.y)/blockSize);
       if (y+2 > blocks[0].length) friction = 3;
@@ -55,12 +56,12 @@ class Player
       {
         friction = blocks[x+1][y].getFriction();
       }
-      if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
-      else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
     }
+    //add block friction
+    if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
+    else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
     //add gravity
     velocity.add(acceleration);
-    //add block friction
     
     this.draw();
   }
