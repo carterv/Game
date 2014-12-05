@@ -1,12 +1,13 @@
 //controller variables
 Block[][] blocks;
+Player player;
 
 //game options, mostly constants
 float blockSize, playerHeight, playerWidth;
 color backgroundColor;
 
 //input variables
-boolean mouseL, mouseR;
+boolean mouseL, mouseR, moveL, moveR;
 
 void setup()
 {
@@ -22,10 +23,11 @@ void setup()
   backgroundColor = 0;
   
   //input variables
-  mouseL = mouseR = false;
+  mouseL = mouseR = moveL = moveR = false;
   
-  //terrain
+  //controller variables
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
+  player = new Player(new PVector(width/2-blockSize/2,0));
 }
 
 void draw()
@@ -37,6 +39,9 @@ void draw()
     
   //draw the blocks
   renderBlocks();
+  
+  //draw and update the player
+  player.update();
 }
 
 void mousePressed()
@@ -53,7 +58,23 @@ void mouseReleased()
 
 void keyPressed()
 {
-  
+  if (key == 'a' || key == 'A')
+  {
+    moveL = true;
+  }
+  else if (key == 'w' || key == 'W')
+  {
+    int mx = (int)(mouseX/blockSize);
+    int my = (int)(mouseY/blockSize);
+    if (my+2 < blocks[0].length && (blocks[mx][my+2] != null || blocks[mx+1][my+2] != null))
+    {
+      player.setVSpeed(-7);
+    }
+  }
+  else if (key == 'd' || key == 'D')
+  {
+    moveR = true;
+  }
 }
 
 void renderBlocks()
@@ -84,7 +105,7 @@ void doInput()
       }
     }
   }
-  if (mouseR)
+  else if (mouseR)
   {
     int mx = (int)(mouseX/blockSize);
     int my = (int)(mouseY/blockSize);
@@ -96,5 +117,13 @@ void doInput()
         blocks[mx][my] = null;
       }
     }
+  }
+  if (moveL)
+  {
+    player.setHSpeed(-5);
+  }
+  else if (moveR)
+  {
+    player.setHSpeed(5);
   }
 }

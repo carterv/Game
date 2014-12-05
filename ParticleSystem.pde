@@ -12,6 +12,6 @@ abstract class ParticleSystem
   
   boolean isAlive()
   {
-    
+    return true;
   }
 }

@@ -17,6 +17,6 @@ abstract class Particle
   
   boolean isAlive()
   {
-    
+    return true;
   }
 }
