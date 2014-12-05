@@ -75,6 +75,22 @@ void keyPressed()
   {
     moveR = true;
   }
+  else if (key == ' ')
+  {
+    player.setLocation(new PVector(mouseX - mouseX%blockSize, mouseY - mouseY%blockSize));
+  }
+}
+
+void keyReleased()
+{
+  if (key == 'a' || key == 'A')
+  {
+    moveL = false;
+  }
+  else if(key == 'd' || key == 'D')
+  {
+    moveR = false;
+  }
 }
 
 void renderBlocks()
