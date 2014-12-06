@@ -38,6 +38,7 @@ void setup()
   creativeInventory.add(newBlock("block.stone",2,2,2));
   creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.water",2,3*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -47,12 +48,12 @@ void draw()
 
   //check input
   doInput();
-    
-  //draw the blocks
-  renderBlocks();
   
   //draw and update the player
   player.update();
+    
+  //draw the blocks
+  renderBlocks();
   
   //draw the inventory
   renderInventory();
@@ -126,7 +127,7 @@ void renderBlocks()
     {
       if (blocks[i][j] != null) 
       {
-        if (blocks[i][j] instanceof BlockDirt || blocks[i][j] instanceof BlockGrass) blocks[i][j].update();
+        blocks[i][j].update();
         blocks[i][j].draw();
       }
     }
@@ -153,7 +154,7 @@ void doInput()
     int my = (int)(mouseY/blockSize);
     if (!(mx < 0 || mx >= blocks.length || my < 0 || my >= blocks[0].length))
     {
-      if ((blocks[mx][my] == null))
+      if (blocks[mx][my] == null || !blocks[mx][my].isSolid())
       {
         PVector location = player.getLocation();
         PVector hitbox = player.getHitbox();
@@ -162,7 +163,11 @@ void doInput()
         int j0 = (int)(location.y/blockSize);
         int j1 = (int)((location.y + hitbox.y/2-1)/blockSize);
         int j2 = (int)((location.y + hitbox.y-1)/blockSize);
-        if (!((i0 == mx && (my == j0 || my == j1 || my == j2)) || (i1 == mx && (my == j0 || my == j1 || my == j2)))) blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
+        if (!((i0 == mx && (my == j0 || my == j1 || my == j2)) || (i1 == mx && (my == j0 || my == j1 || my == j2))))
+        {
+          blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
+          blocks[mx][my].forceCheck();
+        }
       }
     }
   }
@@ -202,6 +207,10 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.grass"))
   {
     return new BlockGrass(x,y,scale);
+  }
+  else if (type.equals("block.water"))
+  {
+    return new BlockWater(x,y,scale);
   }
   return null;
 }

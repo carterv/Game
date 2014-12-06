@@ -5,7 +5,8 @@ class BlockGrass extends Block
   BlockGrass(float x, float y, float scale)
   {
     super(x,y,scale);
-    timer = (int)random(90) + 60;
+    type = "block.grass";
+    timer = 1;
   }
   
   void update()
@@ -22,10 +23,6 @@ class BlockGrass extends Block
         this.forceCheck();
       }
     }
-    else if (timer < 60)
-    {
-      timer = (int)random(90) + 60;
-    }
   }
   
   void draw()
@@ -34,10 +31,5 @@ class BlockGrass extends Block
     rect(position.x,position.y,drawSize,drawSize/4);
     fill(183,112,54);
     rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
-  }
-  
-  String getType()
-  {
-    return "block.grass";
   }
 }

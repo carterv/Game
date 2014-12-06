@@ -1,35 +1,32 @@
 abstract class Block
 {
   PVector position;
-  float drawSize;
   float friction;
+  float drawSize;
   boolean solid;
-  
+  String type;
+
   Block(float xpos, float ypos, float scale)
   {
-    position = new PVector(xpos,ypos);
+    position = new PVector(xpos, ypos);
     drawSize = scale*blockSize;
     friction = 3;
     solid = true;
-    
-    this.forceCheck();
+    type = "block.air";
   }
-  
+
   void update()
   {
-    
   }
-  
+
   void check()
   {
-    
   }
-  
+
   void draw()
   {
-    
   }
-  
+
   void forceCheck()
   {
     int x = (int)(position.x/blockSize);
@@ -49,19 +46,20 @@ abstract class Block
       if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
     }
   }
-  
+
   float getFriction()
   {
     return friction;
   }
-  
+
   String getType()
   {
-    return "block.air";
+    return type;
   }
-  
+
   boolean isSolid()
   {
     return solid;
   }
 }
+
