@@ -3,12 +3,14 @@ abstract class Block
   PVector position;
   float drawSize;
   float friction;
+  boolean solid;
   
   Block(float xpos, float ypos, float scale)
   {
     position = new PVector(xpos,ypos);
     drawSize = scale*blockSize;
     friction = 3;
+    solid = true;
     
     this.forceCheck();
   }
@@ -56,5 +58,10 @@ abstract class Block
   String getType()
   {
     return "block.air";
+  }
+  
+  boolean isSolid()
+  {
+    return solid;
   }
 }

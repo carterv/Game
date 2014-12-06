@@ -10,7 +10,7 @@ color backgroundColor;
 
 //input variables
 boolean mouseL, mouseR, moveL, moveR;
-int inventoryIndex;
+float inventoryIndex;
 
 void setup()
 {
@@ -91,14 +91,16 @@ void keyPressed()
   }
   else if (key == ' ')
   {
-    player.setLocation(new PVector(mouseX - mouseX%blockSize, mouseY - mouseY%blockSize));
+    int x = (int)(mouseX/blockSize);
+    int y = (int)(mouseY/blockSize);
+    if (x > 0 && y > 0 && x < blocks.length && y < blocks[0].length-1 && blocks[x][y] == null && blocks[x][y+1] == null) player.setLocation(new PVector(blockSize*x,blockSize*y));
   }
 }
 
 void mouseWheel(MouseEvent e)
 {
   float count = e.getCount();
-  float change = count;
+  float change = count/2;
   inventoryIndex += change;
   if (inventoryIndex < 0) inventoryIndex += creativeInventory.size();
   inventoryIndex %= creativeInventory.size();
@@ -136,7 +138,7 @@ void renderInventory()
   fill(0,128);
   rect(0,0,2*blockSize+4,(2*blockSize+4)*creativeInventory.size()+2);
   fill(255,128);
-  rect(0,inventoryIndex*(2*blockSize+4),2*blockSize+4,2*blockSize+4);
+  rect(0,(int)inventoryIndex*(2*blockSize+4),2*blockSize+4,2*blockSize+4);
   for (Block b : creativeInventory)
   {
     b.draw();
@@ -153,7 +155,14 @@ void doInput()
     {
       if ((blocks[mx][my] == null))
       {
-        blocks[mx][my] = newBlock(creativeInventory.get(inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
+        PVector location = player.getLocation();
+        PVector hitbox = player.getHitbox();
+        int i0 = (int)(location.x/blockSize);
+        int i1 = (int)((location.x+hitbox.x-1)/blockSize);
+        int j0 = (int)(location.y/blockSize);
+        int j1 = (int)((location.y + hitbox.y/2-1)/blockSize);
+        int j2 = (int)((location.y + hitbox.y-1)/blockSize);
+        if (!((i0 == mx && (my == j0 || my == j1 || my == j2)) || (i1 == mx && (my == j0 || my == j1 || my == j2)))) blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
       }
     }
   }
@@ -172,11 +181,11 @@ void doInput()
   }
   if (moveL)
   {
-    player.setHSpeed(-4);
+    player.setHSpeed(-3);
   }
   else if (moveR)
   {
-    player.setHSpeed(4);
+    player.setHSpeed(3);
   }
 }
 
