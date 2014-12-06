@@ -48,21 +48,24 @@ class BlockDirt extends Block
   
   void check()
   {
-    int x = (int)(position.x/blockSize);
-    int y = (int)(position.y/blockSize);
-    if (y > 0 && blocks[x][y-1] != null) surroundings[0] = blocks[x][y-1];
-    if (x > 0)
+    if (drawSize/blockSize == 1)
     {
-      if (y > 0 && blocks[x-1][y-1] != null) surroundings[1] = blocks[x-1][y-1];
-      if (blocks[x-1][y] != null) surroundings[2] = blocks[x-1][y];
-      if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) surroundings[3] = blocks[x-1][y+1];
-    }
-    if (y < blocks[0].length-1 && blocks[x][y+1] != null) surroundings[4] = blocks[x][y+1];
-    if (x < blocks.length-1)
-    {
-      if (y > 0 && blocks[x+1][y-1] != null) surroundings[5] = blocks[x+1][y-1];
-      if (blocks[x+1][y] != null) surroundings[6] = blocks[x+1][y];
-      if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) surroundings[7] = blocks[x+1][y+1];
+      int x = (int)(position.x/blockSize);
+      int y = (int)(position.y/blockSize);
+      if (y > 0 && blocks[x][y-1] != null) surroundings[0] = blocks[x][y-1];
+      if (x > 0)
+      {
+        if (y > 0 && blocks[x-1][y-1] != null) surroundings[1] = blocks[x-1][y-1];
+        if (blocks[x-1][y] != null) surroundings[2] = blocks[x-1][y];
+        if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) surroundings[3] = blocks[x-1][y+1];
+      }
+      if (y < blocks[0].length-1 && blocks[x][y+1] != null) surroundings[4] = blocks[x][y+1];
+      if (x < blocks.length-1)
+      {
+        if (y > 0 && blocks[x+1][y-1] != null) surroundings[5] = blocks[x+1][y-1];
+        if (blocks[x+1][y] != null) surroundings[6] = blocks[x+1][y];
+        if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) surroundings[7] = blocks[x+1][y+1];
+      }
     }
   }
 }

@@ -179,8 +179,9 @@ void doInput()
     {
       if ((blocks[mx][my] != null))
       {
-        blocks[mx][my].forceCheck();
+        Block b = blocks[mx][my];
         blocks[mx][my] = null;
+        b.forceCheck();
       }
     }
   }

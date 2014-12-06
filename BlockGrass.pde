@@ -20,7 +20,7 @@ class BlockGrass extends Block
       if (timer <= 0)
       {
         blocks[x][y] = newBlock("block.dirt",position.x,position.y,drawSize/blockSize);
-        this.forceCheck();
+        blocks[x][y].forceCheck();
       }
     }
   }

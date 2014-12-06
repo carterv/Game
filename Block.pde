@@ -13,6 +13,7 @@ abstract class Block
     friction = 3;
     solid = true;
     type = "block.air";
+    this.forceCheck();
   }
 
   void update()
@@ -29,21 +30,24 @@ abstract class Block
 
   void forceCheck()
   {
-    int x = (int)(position.x/blockSize);
-    int y = (int)(position.y/blockSize);
-    if (y > 0 && blocks[x][y-1] != null) blocks[x][y-1].check();
-    if (x > 0)
+    if (drawSize/blockSize == 1)
     {
-      if (y > 0 && blocks[x-1][y-1] != null) blocks[x-1][y-1].check();
-      if (blocks[x-1][y] != null) blocks[x-1][y].check();
-      if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) blocks[x-1][y+1].check();
-    }
-    if (y < blocks[0].length-1 && blocks[x][y+1] != null) blocks[x][y+1].check();
-    if (x < blocks.length-1)
-    {
-      if (y > 0 && blocks[x+1][y-1] != null) blocks[x+1][y-1].check();
-      if (blocks[x+1][y] != null) blocks[x+1][y].check();
-      if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
+      int x = (int)(position.x/blockSize);
+      int y = (int)(position.y/blockSize);
+      if (y > 0 && blocks[x][y-1] != null) blocks[x][y-1].check();
+      if (x > 0)
+      {
+        if (y > 0 && blocks[x-1][y-1] != null) blocks[x-1][y-1].check();
+        if (blocks[x-1][y] != null) blocks[x-1][y].check();
+        if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) blocks[x-1][y+1].check();
+      }
+      if (y < blocks[0].length-1 && blocks[x][y+1] != null) blocks[x][y+1].check();
+      if (x < blocks.length-1)
+      {
+        if (y > 0 && blocks[x+1][y-1] != null) blocks[x+1][y-1].check();
+        if (blocks[x+1][y] != null) blocks[x+1][y].check();
+        if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
+      }
     }
   }
 
