@@ -1,5 +1,7 @@
 //controller variables
 Block[][] blocks;
+ArrayList<Block> creativeInventory;
+ArrayList<Block> survivalInventory;
 Player player;
 
 //game options, mostly constants
@@ -8,12 +10,12 @@ color backgroundColor;
 
 //input variables
 boolean mouseL, mouseR, moveL, moveR;
+int inventoryIndex;
 
 void setup()
 {
   //window options
   size(1000,600);
-  frameRate(30);
   
   //draw options
   noStroke();
@@ -28,6 +30,14 @@ void setup()
   //controller variables
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
   player = new Player(new PVector(width/2-blockSize/2,0));
+  
+  //inventory
+  inventoryIndex = 0;
+  //creative inventory blocklist
+  creativeInventory = new ArrayList<Block>();
+  creativeInventory.add(newBlock("block.stone",2,2,2));
+  creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -43,6 +53,9 @@ void draw()
   
   //draw and update the player
   player.update();
+  
+  //draw the inventory
+  renderInventory();
 }
 
 void mousePressed()
@@ -82,6 +95,15 @@ void keyPressed()
   }
 }
 
+void mouseWheel(MouseEvent e)
+{
+  float count = e.getCount();
+  float change = count;
+  inventoryIndex += change;
+  if (inventoryIndex < 0) inventoryIndex += creativeInventory.size();
+  inventoryIndex %= creativeInventory.size();
+}
+
 void keyReleased()
 {
   if (key == 'a' || key == 'A')
@@ -102,9 +124,22 @@ void renderBlocks()
     {
       if (blocks[i][j] != null) 
       {
+        if (blocks[i][j] instanceof BlockDirt || blocks[i][j] instanceof BlockGrass) blocks[i][j].update();
         blocks[i][j].draw();
       }
     }
+  }
+}
+
+void renderInventory()
+{
+  fill(0,128);
+  rect(0,0,2*blockSize+4,(2*blockSize+4)*creativeInventory.size()+2);
+  fill(255,128);
+  rect(0,inventoryIndex*(2*blockSize+4),2*blockSize+4,2*blockSize+4);
+  for (Block b : creativeInventory)
+  {
+    b.draw();
   }
 }
 
@@ -118,7 +153,7 @@ void doInput()
     {
       if ((blocks[mx][my] == null))
       {
-        blocks[mx][my] = new BlockStone(mx*blockSize,my*blockSize,1);
+        blocks[mx][my] = newBlock(creativeInventory.get(inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
       }
     }
   }
@@ -130,7 +165,7 @@ void doInput()
     {
       if ((blocks[mx][my] != null))
       {
-        blocks[mx][my].destroy();
+        blocks[mx][my].forceCheck();
         blocks[mx][my] = null;
       }
     }
@@ -143,4 +178,21 @@ void doInput()
   {
     player.setHSpeed(4);
   }
+}
+
+Block newBlock(String type, float x, float y, float scale)
+{
+  if (type.equals("block.stone"))
+  {
+    return new BlockStone(x,y,scale);
+  }
+  else if (type.equals("block.dirt"))
+  {
+    return new BlockDirt(x,y,scale);
+  }
+  else if (type.equals("block.grass"))
+  {
+    return new BlockGrass(x,y,scale);
+  }
+  return null;
 }

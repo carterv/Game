@@ -10,4 +10,9 @@ class BlockStone extends Block
     fill(128);
     rect(position.x,position.y,drawSize,drawSize);
   }
+  
+  String getType()
+  {
+    return "block.stone";
+  }
 }
