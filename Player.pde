@@ -19,7 +19,7 @@ class Player
     float xVel = velocity.x;
     float yVel = velocity.y;
     //try horizontal movement
-    position.x += xVel;
+    position.x += (collidedNonSolid() ? xVel/3 : xVel);
     if (collided() && xVel != 0)
     {
       xVel = xVel/abs(xVel);
@@ -31,7 +31,7 @@ class Player
     }
     //try vertical movement
     float friction = .25; 
-    if (abs(yVel) >= 1) position.y += yVel;
+    if (abs(yVel) >= 1) position.y += (collidedNonSolid() ? yVel/3 : yVel);
     if (collided() && yVel != 0)
     {
       yVel = yVel/abs(yVel);
@@ -60,6 +60,7 @@ class Player
     //add block friction
     if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
     else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
+    if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
     //add gravity
     velocity.add(acceleration);
     
@@ -87,6 +88,23 @@ class Player
          || (blocks[i1][j1] != null && blocks[i1][j1].isSolid())
          || (blocks[i0][j2] != null && blocks[i0][j2].isSolid())
          || (blocks[i1][j2] != null && blocks[i1][j2].isSolid()));
+  }
+  
+  boolean collidedNonSolid()
+  {
+    int i0 = (int)(position.x/blockSize);
+    int i1 = (int)((position.x + hitbox.x - 1)/blockSize);
+    int j0 = (int)(position.y/blockSize);
+    int j1 = (int)((position.y + hitbox.y/2 - 1)/blockSize);
+    int j2 = (int)((position.y + hitbox.y - 1)/blockSize);
+    if (position.x < 0 || position.y < 0 || position.x + hitbox.x >= width || position.y + hitbox.y >= height) return true;
+    if (i1 >= blocks.length || j2 >= blocks.length) return true;
+    return ((blocks[i0][j0] != null && !blocks[i0][j0].isSolid())
+         || (blocks[i1][j0] != null && !blocks[i1][j0].isSolid())
+         || (blocks[i0][j1] != null && !blocks[i0][j1].isSolid())
+         || (blocks[i1][j1] != null && !blocks[i1][j1].isSolid())
+         || (blocks[i0][j2] != null && !blocks[i0][j2].isSolid())
+         || (blocks[i1][j2] != null && !blocks[i1][j2].isSolid()));
   }
   
   //setters and getters

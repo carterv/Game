@@ -94,7 +94,10 @@ void keyPressed()
   {
     int x = (int)(mouseX/blockSize);
     int y = (int)(mouseY/blockSize);
-    if (x > 0 && y > 0 && x < blocks.length && y < blocks[0].length-1 && blocks[x][y] == null && blocks[x][y+1] == null) player.setLocation(new PVector(blockSize*x,blockSize*y));
+    if (x >= 0 && y >= 0 && x < blocks.length-1 && y < blocks[0].length-1)
+    { 
+      if ((blocks[x][y] == null || !blocks[x][y].isSolid()) && (blocks[x][y+1] == null || !blocks[x][y+1].isSolid())) player.setLocation(new PVector(blockSize*x,blockSize*y));
+    }
   }
 }
 

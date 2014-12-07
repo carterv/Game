@@ -9,6 +9,7 @@ class BlockWater extends Block
     type = "block.water";
     solid = false;
     shouldSpread = true;
+    friction = 4;
     this.check();
   }
   
