@@ -19,7 +19,7 @@ class BlockWater extends Block
     {
       int x = (int)(position.x/blockSize);
       int y = (int)(position.y/blockSize);
-      if (x > 0 && blocks[x-1][y] == null) 
+      if (x > 0 && blocks[x-1][y] == null && (y >= blocks[0].length-1 || (blocks[x][y+1] != null && blocks[x][y+1].isSolid()))) 
       {
         blocks[x-1][y] = newBlock("block.water", (x-1)*blockSize, y*blockSize, 1);
       }
@@ -27,7 +27,7 @@ class BlockWater extends Block
       {
         blocks[x][y+1] = newBlock("block.water", x*blockSize, (y+1)*blockSize, 1);
       }
-      if (x < blocks.length-1 && blocks[x+1][y] == null)
+      if (x < blocks.length-1 && blocks[x+1][y] == null && (y >= blocks[0].length-1 || (blocks[x][y+1] != null && blocks[x][y+1].isSolid())))
       {
         blocks[x+1][y] = newBlock("block.water", (x+1)*blockSize, y*blockSize, 1);
       }
