@@ -62,7 +62,7 @@ class Player
     else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
     if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
     //add gravity
-    velocity.add(acceleration);
+    if (velocity.y > -10) velocity.add(acceleration);
     
     this.draw();
   }
