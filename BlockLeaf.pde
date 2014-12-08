@@ -6,6 +6,7 @@ class BlockLeaf extends Block
     if (generated) type = "block.leaf.generated";
     else type = "block.leaf.placed";
     solid = false;
+    friction = 4;
   }
   
   void update()
