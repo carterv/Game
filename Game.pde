@@ -39,6 +39,8 @@ void setup()
   creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.water",2,3*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -215,6 +217,18 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.water"))
   {
     return new BlockWater(x,y,scale);
+  }
+  else if (type.equals("block.leaf.generated"))
+  {
+    return new BlockLeaf(x,y,scale,true);
+  }
+  else if (type.equals("block.leaf.placed"))
+  {
+    return new BlockLeaf(x,y,scale,false);
+  }
+  else if (type.equals("block.log"))
+  {
+    return new BlockLog(x,y,scale);
   }
   return null;
 }
