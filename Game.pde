@@ -83,7 +83,7 @@ void keyPressed()
   {
     int px = (int)(player.getLocation().x/blockSize);
     int py = (int)(player.getLocation().y/blockSize);
-    if (py+2 >= blocks[0].length || (blocks[px][py+2] != null || ((px+1)*blockSize < (player.getLocation().x+blockSize) ? (px+1 < blocks.length && blocks[px+1][py+2] != null) : false) || ((blocks[px][py] != null && !blocks[px][py].isSolid()) && (blocks[px][py+1] != null && !blocks[px][py+1].isSolid()))))
+    if (py+2 >= blocks[0].length || (blocks[px][py+2] != null || ((px+1)*blockSize < (player.getLocation().x+blockSize) && px+1 < blocks.length && blocks[px+1][py+2] != null) || ((blocks[px][py] != null && !blocks[px][py].isSolid()) && (blocks[px][py+1] != null && !blocks[px][py+1].isSolid()))))
     {
       player.setVSpeed(-7);
     }
