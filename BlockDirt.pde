@@ -10,7 +10,7 @@ class BlockDirt extends Block
     type = "block.dirt";
     timer = (int)random(90) + 150;
     surroundings = new Block[8];
-    check();
+    this.check();
   }
   
   void update()
@@ -20,7 +20,7 @@ class BlockDirt extends Block
     if (y == 0) return;
     if (surroundings[0] == null)
     {
-      this.check();
+      this.forceCheck();
       for (Block b : surroundings)
       {
         if (b != null && b instanceof BlockGrass)
@@ -31,7 +31,7 @@ class BlockDirt extends Block
       if (timer <= 0)
       {
         blocks[x][y] = newBlock("block.grass",position.x,position.y,drawSize/blockSize);
-        forceCheck();
+        this.forceCheck();
       }
     }
     else if (timer < 150)
@@ -48,41 +48,23 @@ class BlockDirt extends Block
   
   void check()
   {
-    //if (drawSize/blockSize == 1)
+    if (drawSize/blockSize == 1)
     {
       int x = (int)(position.x/blockSize);
       int y = (int)(position.y/blockSize);
-      if (y > 0) surroundings[0] = blocks[x][y-1];
-      else surroundings[0] = null;
+      if (y > 0 && blocks[x][y-1] != null) surroundings[0] = blocks[x][y-1];
       if (x > 0)
       {
-        if (y > 0) surroundings[1] = blocks[x-1][y-1];
-        else surroundings[1] = null;
-        surroundings[2] = blocks[x-1][y];
-        if (y < blocks[0].length-1) surroundings[3] = blocks[x-1][y+1];
-        else surroundings[3] = null;
+        if (y > 0 && blocks[x-1][y-1] != null) surroundings[1] = blocks[x-1][y-1];
+        if (blocks[x-1][y] != null) surroundings[2] = blocks[x-1][y];
+        if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) surroundings[3] = blocks[x-1][y+1];
       }
-      else
-      {
-        surroundings[1] = null;
-        surroundings[2] = null;
-        surroundings[3] = null;
-      }
-      if (y < blocks[0].length-1) surroundings[4] = blocks[x][y+1];
-      else surroundings[4] = null;
+      if (y < blocks[0].length-1 && blocks[x][y+1] != null) surroundings[4] = blocks[x][y+1];
       if (x < blocks.length-1)
       {
-        if (y > 0) surroundings[5] = blocks[x+1][y-1];
-        else surroundings[5] = null;
-        surroundings[6] = blocks[x+1][y];
-        if (y < blocks[0].length-1) surroundings[7] = blocks[x+1][y+1];
-        else surroundings[7] = null;
-      }
-      else
-      {
-        surroundings[5] = null;
-        surroundings[6] = null;
-        surroundings[7] = null;
+        if (y > 0 && blocks[x+1][y-1] != null) surroundings[5] = blocks[x+1][y-1];
+        if (blocks[x+1][y] != null) surroundings[6] = blocks[x+1][y];
+        if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) surroundings[7] = blocks[x+1][y+1];
       }
     }
   }
