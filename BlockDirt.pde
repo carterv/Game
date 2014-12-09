@@ -10,7 +10,6 @@ class BlockDirt extends Block
     type = "block.dirt";
     timer = (int)random(90) + 150;
     surroundings = new Block[8];
-    check();
   }
   
   void update()

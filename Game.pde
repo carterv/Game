@@ -41,6 +41,7 @@ void setup()
   creativeInventory.add(newBlock("block.water",2,3*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -130,11 +131,8 @@ void renderBlocks()
   {
     for (int j = 0; j < blocks[i].length; j++)
     {
-      if (blocks[i][j] != null) 
-      {
-        blocks[i][j].update();
-        blocks[i][j].draw();
-      }
+      if (blocks[i][j] != null) blocks[i][j].update();
+      if (blocks[i][j] != null) blocks[i][j].draw();
     }
   }
 }
@@ -171,6 +169,7 @@ void doInput()
         if (!((i0 == mx && (my == j0 || my == j1 || my == j2)) || (i1 == mx && (my == j0 || my == j1 || my == j2))))
         {
           blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
+          blocks[mx][my].check();
           blocks[mx][my].forceCheck();
         }
       }
@@ -229,6 +228,10 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.log"))
   {
     return new BlockLog(x,y,scale);
+  }
+  else if (type.equals("block.sand"))
+  {
+    return new BlockSand(x,y,scale);
   }
   return null;
 }
