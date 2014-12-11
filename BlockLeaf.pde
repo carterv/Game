@@ -1,5 +1,8 @@
 class BlockLeaf extends Block
 {
+  boolean shouldDecay;
+  int timer;
+  
   BlockLeaf(float x, float y, float scale, boolean generated)
   {
     super(x,y,scale);
@@ -7,6 +10,8 @@ class BlockLeaf extends Block
     else type = "block.leaf.placed";
     solid = false;
     friction = 4;
+    shouldDecay = false;
+    timer = 60 + (int)random(240);
   }
   
   void update()
@@ -16,12 +21,34 @@ class BlockLeaf extends Block
       int x = (int)(position.x/blockSize);
       int y = (int)(position.y/blockSize);
       //decay code
+      if (shouldDecay)
+      {
+        timer -= 1;
+        if (timer == 0)
+        {
+          blocks[x][y] = null;
+          this.forceCheck();
+        }
+        check();
+      }
+      else if (timer <= 60)
+      {
+        timer = 60 + (int)random(240);
+      }
     }
   }
   
   void check()
   {
     //check for log
+    if (type.equals("block.leaf.generated"))
+    {
+      //check for a log
+    }
+    else
+    {
+      shouldDecay = false;
+    }
   }
   
   void draw()
