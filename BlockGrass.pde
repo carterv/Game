@@ -7,6 +7,7 @@ class BlockGrass extends Block
     super(x,y,scale);
     type = "block.grass";
     timer = 1;
+    this.makeSprite();
   }
   
   void update()
@@ -25,11 +26,23 @@ class BlockGrass extends Block
     }
   }
   
-  void draw()
+  void makeSprite()
   {
-    fill(30,175,45);
-    rect(position.x,position.y,drawSize,drawSize/4);
-    fill(183,112,54);
-    rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
+    int w = sprite.width;
+    int h = sprite.height;
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h/4; j++)
+      {
+        sprite.pixels[j*h+i] = color(30,175,45); 
+      }
+    }
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = h/4; j < h; j++)
+      {
+        sprite.pixels[j*w+i] = color(183,112,54); 
+      }
+    }
   }
 }

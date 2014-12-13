@@ -12,6 +12,7 @@ class BlockLeaf extends Block
     friction = 4;
     shouldDecay = false;
     timer = 60 + (int)random(240);
+    this.makeSprite();
   }
   
   void update()
@@ -51,37 +52,45 @@ class BlockLeaf extends Block
     }
   }
   
-  void draw()
+  void makeSprite()
   {
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
-    if ((x%2 == 0 && y%2 == 0) || (x%2 == 1 && y%2 == 1))
+    int w = sprite.width;
+    int h = sprite.height;
+    if (x%2 == y%2)
     {
-      fill(33,203,31);
-      rect(position.x,position.y,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y+drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x,position.y+2*drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y+2*drawSize/3,drawSize/3,drawSize/3);
-      fill(44,157,41,128);
-      rect(position.x,position.y+drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y+2*drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y+drawSize/3,drawSize/3,drawSize/3);
+      for (int i = 0; i < w; i++)
+      {
+        for (int j = 0; j < h; j++)
+        {
+          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j <h/3) || (i >= w/3 && i <= 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
+          {
+            sprite.pixels[j*w+i] = color(33,203,31);
+          }
+          else
+          {
+            sprite.pixels[j*w+i] = color(44,157,41,128);
+          }
+        }
+      }
     }
     else
     {
-      fill(33,203,31);
-      rect(position.x,position.y+drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y+2*drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y+drawSize/3,drawSize/3,drawSize/3);
-      fill(44,157,41,128);
-      rect(position.x,position.y,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y,drawSize/3,drawSize/3);
-      rect(position.x+drawSize/3,position.y+drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x,position.y+2*drawSize/3,drawSize/3,drawSize/3);
-      rect(position.x+2*drawSize/3,position.y+2*drawSize/3,drawSize/3,drawSize/3);
+      for (int i = 0; i < w; i++)
+      {
+        for (int j = 0; j < h; j++)
+        {
+          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j <h/3) || (i >= w/3 && i <= 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
+          {
+            sprite.pixels[j*w+i] = color(44,157,41,128);
+          }
+          else
+          {
+            sprite.pixels[j*w+i] = color(33,203,31);
+          }
+        }
+      }
     }
   }
 }

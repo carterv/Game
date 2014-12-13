@@ -10,6 +10,7 @@ class BlockDirt extends Block
     type = "block.dirt";
     timer = (int)random(90) + 150;
     surroundings = new Block[8];
+    this.makeSprite();
   }
   
   void update()
@@ -39,10 +40,18 @@ class BlockDirt extends Block
     }
   }
   
-  void draw()
+  
+  void makeSprite()
   {
-    fill(183,112,54);
-    rect(position.x,position.y,drawSize,drawSize);
+    int w = sprite.width;
+    int h = sprite.height;
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        sprite.pixels[j*w+i] = color(183,112,54); 
+      }
+    }
   }
   
   void check()

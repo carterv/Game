@@ -1,9 +1,10 @@
 abstract class Block
 {
-  PVector position;
+  boolean solid;
   float friction;
   float drawSize;
-  boolean solid;
+  PImage sprite;
+  PVector position;
   String type;
 
   Block(float xpos, float ypos, float scale)
@@ -13,6 +14,7 @@ abstract class Block
     friction = 3;
     solid = true;
     type = "block.air";
+    sprite = createImage((int)drawSize,(int)drawSize,ARGB);
     this.forceCheck();
   }
 
@@ -25,6 +27,11 @@ abstract class Block
   }
 
   void draw()
+  {
+    image(sprite, position.x, position.y);
+  }
+  
+  void makeSprite()
   {
   }
 
