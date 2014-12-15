@@ -6,7 +6,7 @@ abstract class System
   int max;
   
   //particle system setup
-  ParticleSystem(int num, color c)
+  System(int num, color c)
   {
     particles = new ArrayList<Particle>();
     max = num;
