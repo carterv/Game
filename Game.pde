@@ -9,8 +9,9 @@ float blockSize, playerHeight, playerWidth;
 color backgroundColor;
 
 //input variables
-boolean mouseL, mouseR, moveL, moveR, jump;
+boolean mouseL, mouseR, jump;
 float inventoryIndex;
+int keyDown;
 
 void setup()
 {
@@ -25,7 +26,8 @@ void setup()
   backgroundColor = color(0,128);
   
   //input variables
-  mouseL = mouseR = moveL = moveR = jump = false;
+  mouseL = mouseR = jump = false;
+  keyDown = 0;
   
   //controller variables
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
@@ -78,7 +80,7 @@ void keyPressed()
 {
   if (key == 'a' || key == 'A')
   {
-    moveL = true;
+    keyDown = 1;
   }
   else if (key == 'w' || key == 'W')
   {
@@ -86,7 +88,7 @@ void keyPressed()
   }
   else if (key == 'd' || key == 'D')
   {
-    moveR = true;
+    keyDown = 2;
   }
   else if (key == ' ')
   {
@@ -112,7 +114,7 @@ void keyReleased()
 {
   if (key == 'a' || key == 'A')
   {
-    moveL = false;
+    if (keyDown == 1) keyDown = 0;
   }
   else if (key == 'w' || key == 'W')
   {
@@ -120,7 +122,7 @@ void keyReleased()
   }
   else if (key == 'd' || key == 'D')
   {
-    moveR = false;
+    if (keyDown == 2) keyDown = 0;
   }
 }
 
@@ -188,11 +190,11 @@ void doInput()
       }
     }
   }
-  if (moveL)
+  if (keyDown == 1)
   {
     player.setHSpeed(-3);
   }
-  else if (moveR)
+  else if (keyDown == 2)
   {
     player.setHSpeed(3);
   }
