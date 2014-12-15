@@ -132,8 +132,11 @@ void renderBlocks()
   {
     for (int j = 0; j < blocks[i].length; j++)
     {
-      if (blocks[i][j] != null) blocks[i][j].update();
-      if (blocks[i][j] != null) blocks[i][j].draw();
+      if (blocks[i][j] != null) 
+      {
+        blocks[i][j].draw();
+        blocks[i][j].update();
+      }
     }
   }
 }
