@@ -65,4 +65,9 @@ abstract class Emitter extends Block
   {
     return null;
   }
+  
+  boolean isAlive()
+  {
+    return particles.size() > 0;
+  }
 }

@@ -54,6 +54,7 @@ class BlockLeaf extends Block
   
   void makeSprite()
   {
+    super.makeSprite();
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     int w = sprite.width;

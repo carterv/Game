@@ -9,6 +9,7 @@ class BlockLog extends Block
   
   void makeSprite()
   {
+    super.makeSprite();
     int w = sprite.width;
     int h = sprite.height;
     for (int i = 0; i < w; i++)

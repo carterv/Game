@@ -14,7 +14,6 @@ abstract class Block
     friction = 3;
     solid = true;
     type = "block.null";
-    sprite = createImage((int)drawSize,(int)drawSize,ARGB);
     this.forceCheck();
   }
 
@@ -33,6 +32,7 @@ abstract class Block
   
   void makeSprite()
   {
+    sprite = createImage((int)drawSize,(int)drawSize,ARGB);
   }
 
   void forceCheck()
@@ -71,6 +71,11 @@ abstract class Block
   boolean isSolid()
   {
     return solid;
+  }
+  
+  PImage getSprite()
+  {
+    return sprite.get();
   }
 }
 

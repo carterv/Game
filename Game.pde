@@ -186,10 +186,15 @@ void doInput()
     int my = (int)(mouseY/blockSize);
     if (!(mx < 0 || mx >= blocks.length || my < 0 || my >= blocks[0].length))
     {
-      if ((blocks[mx][my] != null))
+      if ((blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter.")))
       {
         Block b = blocks[mx][my];
-        blocks[mx][my] = null;
+        PImage sprite = b.getSprite();
+        if (sprite != null)
+        {
+          blocks[mx][my] = new EmitterBlockDestroy(mx*blockSize,my*blockSize,1,sprite);
+        }
+        else blocks[mx][my] = null;
         b.forceCheck();
       }
     }

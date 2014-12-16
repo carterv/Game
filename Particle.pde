@@ -2,24 +2,28 @@ abstract class Particle
 {
   //basic particle properties
   color drawColor;
+  int life;
   PVector position;
-  PVector acceleration;
   PVector velocity;
   
   //particle setup
   Particle(PVector location, color c)
   {
     position = location.get();
-    acceleration = new PVector(0,0.05);
     velocity = new PVector(random(2)-1,random(2)-1);
     drawColor = c;
+    life = 100;
   }
   
   //update the particle's postion and velocity, decrease life
   void update()
   {
-    velocity.add(acceleration);
+    //gravity
+    velocity.y += 0.05;
+    //update position
     position.add(velocity);
+    //update life countdown
+    life -= 1;
   }
   
   //draw the particle
@@ -32,6 +36,6 @@ abstract class Particle
   //return particle lifespan
   boolean isAlive()
   {
-    return true;
+    return life > 0;
   }
 }
