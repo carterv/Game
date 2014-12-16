@@ -31,7 +31,11 @@ class Player
     }
     //try vertical movement
     float friction = .25;
-    if (collidedNonSolid() && abs(yVel/3) >= 1) position.y += yVel/3;
+    if (collidedNonSolid())
+    {
+      if (yVel > 0 && abs(yVel/3) >= .5) position.y += yVel/3;
+      else if (yVel < 0 && abs(yVel/3) >= .5) position.y += yVel/3;
+    }
     else if (!collidedNonSolid() && abs(yVel) >= 1) position.y += yVel;
     if (collided() && yVel != 0)
     {

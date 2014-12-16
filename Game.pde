@@ -44,7 +44,6 @@ void setup()
   creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("emitter.test",2,7*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -269,10 +268,6 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.sand"))
   {
     return new BlockSand(x,y,scale);
-  }
-  else if (type.equals("emitter.test"))
-  {
-    return new EmitterTest(x,y,scale);
   }
   return null;
 }
