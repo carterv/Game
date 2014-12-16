@@ -13,7 +13,7 @@ abstract class Block
     drawSize = scale*blockSize;
     friction = 3;
     solid = true;
-    type = "block.air";
+    type = "block.null";
     sprite = createImage((int)drawSize,(int)drawSize,ARGB);
     this.forceCheck();
   }

@@ -211,7 +211,7 @@ void doInput()
       player.setVSpeed(-7);
     }
     //check for non-solid blocks
-    else if ((blocks[px][py] != null && !blocks[px][py].isSolid()) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid())) 
+    else if ((blocks[px][py] != null && !blocks[px][py].isSolid() && !blocks[px][py].getType().startsWith("emitter.")) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid() && !blocks[px][py+1].getType().startsWith("emitter."))) 
     {
       player.setVSpeed(-7);
     }
@@ -223,11 +223,11 @@ void doInput()
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid()))
+      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid() && !blocks[px+1][py].getType().startsWith("emitter.")))
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid()))
+      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid() && !blocks[px+1][py+1].getType().startsWith("emitter.")))
       {
         player.setVSpeed(-7);
       }

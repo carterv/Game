@@ -15,7 +15,7 @@ class BlockGrass extends Block
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     if (y == 0) return;
-    if (blocks[x][y-1] != null)
+    if (blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("emitter."))
     {
       timer -= 1;
       if (timer <= 0)
