@@ -44,6 +44,7 @@ abstract class Emitter extends Block
     }
   }
   
+  
   void populate()
   {
     if (particles.size() < max)
@@ -70,4 +71,7 @@ abstract class Emitter extends Block
   {
     return particles.size() > 0;
   }
+  
+  void forceCheck() {}
+  void check() {}
 }

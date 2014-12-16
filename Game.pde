@@ -3,6 +3,7 @@ Block[][] blocks;
 ArrayList<Block> creativeInventory;
 ArrayList<Block> survivalInventory;
 Player player;
+ArrayList<Emitter> particles;
 
 //game options, mostly constants
 float blockSize, playerHeight, playerWidth;
@@ -32,6 +33,7 @@ void setup()
   //controller variables
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
   player = new Player(new PVector(width/2-blockSize/2,0));
+  particles = new ArrayList<Emitter>();
   
   //inventory
   inventoryIndex = 0;
@@ -129,14 +131,27 @@ void keyReleased()
 
 void renderBlocks()
 {
+  for (Emitter e : particles)
+  {
+    e.draw();
+    e.update();
+  }
+  particles = new ArrayList<Emitter>();
   for (int i = 0; i < blocks.length; i++)
   {
     for (int j = 0; j < blocks[i].length; j++)
     {
       if (blocks[i][j] != null) 
       {
-        blocks[i][j].draw();
-        blocks[i][j].update();
+        if (blocks[i][j].getType().startsWith("emitter."))
+        {
+          particles.add((Emitter)blocks[i][j]);
+        }
+        else
+        {
+          blocks[i][j].draw();
+          blocks[i][j].update();
+        }
       }
     }
   }
@@ -186,7 +201,7 @@ void doInput()
     int my = (int)(mouseY/blockSize);
     if (!(mx < 0 || mx >= blocks.length || my < 0 || my >= blocks[0].length))
     {
-      if ((blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter.")))
+      if ((blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter.blockDestroy")))
       {
         Block b = blocks[mx][my];
         PImage sprite = b.getSprite();

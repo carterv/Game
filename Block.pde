@@ -17,13 +17,9 @@ abstract class Block
     this.forceCheck();
   }
 
-  void update()
-  {
-  }
+  void update() {}
 
-  void check()
-  {
-  }
+  void check() {}
 
   void draw()
   {
@@ -75,7 +71,8 @@ abstract class Block
   
   PImage getSprite()
   {
-    return sprite.get();
+    if (sprite != null) return sprite.get();
+    else return null;
   }
 }
 
