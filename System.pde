@@ -15,7 +15,7 @@ abstract class System
   
   //go through the system and update/draw each particle
   //also, add and replentish particles
-  void run()
+  void update()
   {
     this.populate();
     for (int i = particles.size()-1; i >= 0; i--)

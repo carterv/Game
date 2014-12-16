@@ -26,7 +26,7 @@ abstract class Particle
   void draw()
   {
     fill(drawColor);
-    ellipse(0,0,1,1);
+    ellipse(position.x,position.y,2,2);
   }
   
   //return particle lifespan

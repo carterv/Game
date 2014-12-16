@@ -44,6 +44,7 @@ void setup()
   creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("emitter.test",2,7*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -211,7 +212,7 @@ void doInput()
       player.setVSpeed(-7);
     }
     //check for non-solid blocks
-    else if ((blocks[px][py] != null && !blocks[px][py].isSolid()) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid())) 
+    else if ((blocks[px][py] != null && !blocks[px][py].isSolid() && !blocks[px][py].getType().startsWith("emitter.")) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid() && !blocks[px][py+1].getType().startsWith("emitter."))) 
     {
       player.setVSpeed(-7);
     }
@@ -223,11 +224,11 @@ void doInput()
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid()))
+      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid() && !blocks[px+1][py].getType().startsWith("emitter.")))
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid()))
+      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid() && !blocks[px+1][py+1].getType().startsWith("emitter.")))
       {
         player.setVSpeed(-7);
       }
@@ -268,6 +269,10 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.sand"))
   {
     return new BlockSand(x,y,scale);
+  }
+  else if (type.equals("emitter.test"))
+  {
+    return new EmitterTest(x,y,scale);
   }
   return null;
 }

@@ -44,7 +44,7 @@ class BlockWater extends Block
     boolean flag = false;
     if (y > 0 && drawSize/blockSize == 1)
     {
-      flag = blocks[x][y-1] != null;
+      flag = blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("emitter.");
     }
     fill(0,50,200,128);
     if (flag || drawSize/blockSize != 1)
