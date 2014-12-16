@@ -64,7 +64,7 @@ class BlockLeaf extends Block
       {
         for (int j = 0; j < h; j++)
         {
-          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j <h/3) || (i >= w/3 && i <= 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
+          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j < h/3) || (i >= w/3 && i < 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
           {
             sprite.pixels[j*w+i] = color(33,203,31);
           }
@@ -81,7 +81,7 @@ class BlockLeaf extends Block
       {
         for (int j = 0; j < h; j++)
         {
-          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j <h/3) || (i >= w/3 && i <= 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
+          if ((i < w/3 && j < h/3) || (i >= 2*w/3 && j < h/3) || (i >= w/3 && i < 2*w/3 && j >= h/3 && j < 2*h/3) || (i < w/3 && j >= 2*w/3) || (i >= 2*w/3 && j >= 2*w/3))
           {
             sprite.pixels[j*w+i] = color(44,157,41,128);
           }

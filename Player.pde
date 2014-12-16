@@ -98,7 +98,7 @@ class Player
     int j0 = (int)(position.y/blockSize);
     int j1 = (int)((position.y + hitbox.y/2 - 1)/blockSize);
     int j2 = (int)((position.y + hitbox.y - 1)/blockSize);
-    if (position.x < 0 || position.y < 0 || position.x + hitbox.x >= width || position.y + hitbox.y >= height) return true;
+    if (position.x < 0 || position.y < 0 || position.x + hitbox.x >= width || position.y + hitbox.y >= height) return false;
     if (i1 >= blocks.length || j2 >= blocks.length) return true;
     return ((blocks[i0][j0] != null && !blocks[i0][j0].isSolid())
          || (blocks[i1][j0] != null && !blocks[i1][j0].isSolid())
