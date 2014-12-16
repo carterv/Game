@@ -46,7 +46,6 @@ void setup()
   creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("emitter.test",2,7*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -201,7 +200,7 @@ void doInput()
     int my = (int)(mouseY/blockSize);
     if (!(mx < 0 || mx >= blocks.length || my < 0 || my >= blocks[0].length))
     {
-      if ((blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter.blockDestroy")))
+      if (blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter."))
       {
         Block b = blocks[mx][my];
         PImage sprite = b.getSprite();
@@ -289,10 +288,6 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.sand"))
   {
     return new BlockSand(x,y,scale);
-  }
-  else if (type.equals("emitter.test"))
-  {
-    return new EmitterTest(x,y,scale);
   }
   return null;
 }
