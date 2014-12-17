@@ -26,7 +26,7 @@ class ParticleBlockDestroy extends Particle
       velocity.x = -xVel/3;
     }
     //y-axis collision detection
-    if (abs(yVel) >= 0.5) position.y += yVel;
+    if (abs(yVel) >= 1) position.y += yVel;
     if (collided())
     {
       float d = abs(yVel)/yVel;
