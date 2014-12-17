@@ -24,7 +24,7 @@ class ParticleStream extends Particle
       velocity.x = -xVel/3;
     }
     //y-axis collision detection
-    if (abs(yVel) >= 0.5) position.y += yVel;
+    if (abs(yVel) >= 1) position.y += yVel;
     if (collided())
     {
       float d = abs(yVel)/yVel;
@@ -32,7 +32,7 @@ class ParticleStream extends Particle
       {
         position.y -= d;
       }
-      velocity.y = -yVel/3;
+      velocity.y = -yVel/5;
       velocity.x *= 0.7;
     }
     //gravity
