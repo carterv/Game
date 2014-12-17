@@ -34,7 +34,7 @@ class ParticleBlockDestroy extends Particle
       {
         position.y -= d;
       }
-      velocity.y = -yVel/3;
+      velocity.y = -yVel/5;
       velocity.x *= 0.7;
     }
     //gravity

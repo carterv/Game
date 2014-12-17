@@ -81,9 +81,18 @@ class BlockTNT extends Block
           Block b = blocks[x+i][y+j];
           if (b != null && !b.getType().startsWith("emitter"))
           {
-            if (b.getType().equals("block.tnt") && i != 0 && j != 0) ((BlockTNT)b).setLife(1);
-            else if (b.getSprite() != null) blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite());
-            else blocks[x+i][y+j] = null;
+            if (b.getType().equals("block.tnt") && !(i == 0 && j == 0)) 
+            {
+              ((BlockTNT)b).setLife(1);
+            }
+            else if (b.getSprite() != null)
+            {
+              blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite());
+            }
+            else 
+            {
+              blocks[x+i][y+j] = null;
+            }
             b.forceCheck();
           }
         }
