@@ -14,7 +14,7 @@ class FluidWater extends Fluid
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     boolean flag = false;
-    if (y > 0 && drawSize/blockSize == 1)
+    if (y > 0)
     {
       flag = blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("emitter.");
     }

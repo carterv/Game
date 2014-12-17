@@ -29,18 +29,15 @@ abstract class Emitter extends Block
   
   void draw()
   {
-    if (drawSize/blockSize == 1)
+    populate();
+    for (int i = particles.size()-1; i >= 0; i--)
     {
-      populate();
-      for (int i = particles.size()-1; i >= 0; i--)
-      {
-        Particle p = (Particle)(particles.get(i));
-        
-        p.update();
-        p.draw();
-        
-        replentish(p);
-      }
+      Particle p = (Particle)(particles.get(i));
+      
+      p.update();
+      p.draw();
+      
+      replentish(p);
     }
   }
   

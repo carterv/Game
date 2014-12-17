@@ -41,14 +41,14 @@ void setup()
   inventoryIndex = 0;
   //creative inventory blocklist
   creativeInventory = new ArrayList<Block>();
-  creativeInventory.add(newBlock("block.stone",2,2,2));
-  creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.leaf.placed",2,3*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.log",2,4*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.sand",2,5*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.glass",2,6*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("fluid.water",2,7*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.stone",2,2,1));
+  creativeInventory.add(newBlock("block.grass",2,(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.dirt",2,2*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.leaf.placed",2,3*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.log",2,4*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.sand",2,5*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.glass",2,6*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("fluid.water",2,7*(blockSize+4)+2,1));
 }
 
 void draw()
@@ -162,9 +162,9 @@ void renderBlocks()
 void renderInventory()
 {
   fill(0,128);
-  rect(0,0,2*blockSize+4,(2*blockSize+4)*creativeInventory.size()+2);
+  rect(0,0,blockSize+4,(blockSize+4)*creativeInventory.size()+2);
   fill(255,128);
-  rect(0,(int)inventoryIndex*(2*blockSize+4),2*blockSize+4,2*blockSize+4);
+  rect(0,(int)inventoryIndex*(blockSize+4),blockSize+4,blockSize+4);
   for (Block b : creativeInventory)
   {
     b.draw();
