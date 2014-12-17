@@ -7,7 +7,7 @@ class BlockSand extends Block
   {
     super(x,y,scale);
     type = "block.sand";
-    timer = 7;
+    timer = 5;
     sprite = spriteManager.getSprite(type,drawSize);
   }
   
@@ -32,7 +32,7 @@ class BlockSand extends Block
     else 
     {
       solid = true;
-      if (timer < 7) timer = 7;
+      if (timer < 5) timer = 5;
     }
   }
   

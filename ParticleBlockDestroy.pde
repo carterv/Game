@@ -10,7 +10,7 @@ class ParticleBlockDestroy extends Particle
   void update()
   {
     //fade
-    drawColor = (drawColor & 0xffffff) | ((4*life) << 24);
+    drawColor = (drawColor & 0xffffff) | ((4*life+50) << 24);
     //update position
     float xVel = velocity.x;
     float yVel = velocity.y;
@@ -35,6 +35,7 @@ class ParticleBlockDestroy extends Particle
         position.y -= d;
       }
       velocity.y = -yVel/3;
+      velocity.x *= 0.7;
     }
     //gravity
     velocity.y += 0.05;

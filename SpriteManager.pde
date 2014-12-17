@@ -21,6 +21,24 @@ class SpriteManager
     sprites.put("block.dirt",sprite.get());
     sprite = spriteBase.get();
     
+    //block.glass
+    for (int i = 0; i < w; i++)
+    {
+      sprite.pixels[i] = color(250,250,250);
+      sprite.pixels[sprite.pixels.length-i-1] = color(250,250,250);
+    }
+    for (int j = 1; j < w-1; j++)
+    {
+      sprite.pixels[j*w] = color(250,250,255);
+      sprite.pixels[j*w+w-1] = color(250,250,255);
+      for (int i = 1; i < w-1; i++)
+      {
+        sprite.pixels[j*w+i] = color(200,200,200,50);
+      }
+    }
+    sprites.put("block.glass",sprite.get());
+    sprite = spriteBase.get();
+    
     //block.grass
     for (int i = 0; i < w; i++)
     {

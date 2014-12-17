@@ -44,10 +44,11 @@ void setup()
   creativeInventory.add(newBlock("block.stone",2,2,2));
   creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("fluid.water",2,3*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.leaf.placed",2,3*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.log",2,4*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.sand",2,5*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.glass",2,6*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("fluid.water",2,7*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -202,7 +203,7 @@ void doInput()
     int my = (int)(mouseY/blockSize);
     if (!(mx < 0 || mx >= blocks.length || my < 0 || my >= blocks[0].length))
     {
-      if (blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter."))
+      if (blocks[mx][my] != null && !blocks[mx][my].getType().startsWith("emitter.blockdestroyed"))
       {
         Block b = blocks[mx][my];
         PImage sprite = b.getSprite();
@@ -259,37 +260,14 @@ void doInput()
 
 Block newBlock(String type, float x, float y, float scale)
 {
-  if (type.equals("block.stone"))
-  {
-    return new BlockStone(x,y,scale);
-  }
-  else if (type.equals("block.dirt"))
-  {
-    return new BlockDirt(x,y,scale);
-  }
-  else if (type.equals("block.grass"))
-  {
-    return new BlockGrass(x,y,scale);
-  }
-  else if (type.equals("fluid.water"))
-  {
-    return new FluidWater(x,y,scale);
-  }
-  else if (type.startsWith("block.leaf.generated"))
-  {
-    return new BlockLeaf(x,y,scale,true);
-  }
-  else if (type.startsWith("block.leaf.placed"))
-  {
-    return new BlockLeaf(x,y,scale,false);
-  }
-  else if (type.equals("block.log"))
-  {
-    return new BlockLog(x,y,scale);
-  }
-  else if (type.equals("block.sand"))
-  {
-    return new BlockSand(x,y,scale);
-  }
-  return null;
+  if (type.equals("block.stone")) return new BlockStone(x,y,scale);
+  else if (type.equals("block.dirt")) return new BlockDirt(x,y,scale);
+  else if (type.equals("block.glass")) return new BlockGlass(x,y,scale);
+  else if (type.equals("block.grass")) return new BlockGrass(x,y,scale);
+  else if (type.startsWith("block.leaf.generated")) return new BlockLeaf(x,y,scale,true);
+  else if (type.startsWith("block.leaf.placed")) return new BlockLeaf(x,y,scale,false);
+  else if (type.equals("block.log")) return new BlockLog(x,y,scale);
+  else if (type.equals("block.sand")) return new BlockSand(x,y,scale);
+  else if (type.equals("fluid.water")) return new FluidWater(x,y,scale);
+  else return null;
 }

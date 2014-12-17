@@ -1,7 +1,5 @@
 class EmitterBlockDestroy extends Emitter
 {
-  PImage sprite;
-  
   EmitterBlockDestroy(float x, float y, float scale, PImage base)
   {
     super(x,y,scale,10,color(255));
