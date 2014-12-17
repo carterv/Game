@@ -23,12 +23,7 @@ abstract class Block
 
   void draw()
   {
-    image(sprite, position.x, position.y);
-  }
-  
-  void makeSprite()
-  {
-    sprite = createImage((int)drawSize,(int)drawSize,ARGB);
+    if (sprite != null) image(sprite, position.x, position.y);
   }
 
   void forceCheck()

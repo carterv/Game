@@ -7,7 +7,7 @@ class BlockGrass extends Block
     super(x,y,scale);
     type = "block.grass";
     timer = 1;
-    this.makeSprite();
+    sprite = spriteManager.getSprite(type,drawSize);
   }
   
   void update()
@@ -22,27 +22,6 @@ class BlockGrass extends Block
       {
         blocks[x][y] = newBlock("block.dirt",position.x,position.y,drawSize/blockSize);
         blocks[x][y].forceCheck();
-      }
-    }
-  }
-  
-  void makeSprite()
-  {
-    super.makeSprite();
-    int w = sprite.width;
-    int h = sprite.height;
-    for (int i = 0; i < w; i++)
-    {
-      for (int j = 0; j < h/4; j++)
-      {
-        sprite.pixels[j*h+i] = color(30,175,45); 
-      }
-    }
-    for (int i = 0; i < w; i++)
-    {
-      for (int j = h/4; j < h; j++)
-      {
-        sprite.pixels[j*w+i] = color(183,112,54); 
       }
     }
   }

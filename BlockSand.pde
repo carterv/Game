@@ -8,7 +8,7 @@ class BlockSand extends Block
     super(x,y,scale);
     type = "block.sand";
     timer = 7;
-    this.makeSprite();
+    sprite = spriteManager.getSprite(type,drawSize);
   }
   
   void update()
@@ -41,19 +41,5 @@ class BlockSand extends Block
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     canFall = (drawSize/blockSize == 1 && y+1 < blocks[0].length && (blocks[x][y+1] == null || (!blocks[x][y+1].isSolid() && !(blocks[x][y+1] instanceof BlockLeaf))));
-  }
-  
-  void makeSprite()
-  {
-    super.makeSprite();
-    int w = sprite.width;
-    int h = sprite.height;
-    for (int i = 0; i < w; i++)
-    {
-      for (int j = 0; j < h; j++)
-      {
-        sprite.pixels[j*w+i] = color(255,209,80);
-      }
-    }
   }
 }

@@ -2,8 +2,9 @@
 Block[][] blocks;
 ArrayList<Block> creativeInventory;
 ArrayList<Block> survivalInventory;
-Player player;
 ArrayList<Emitter> particles;
+Player player;
+SpriteManager spriteManager;
 
 //game options, mostly constants
 float blockSize, playerHeight, playerWidth;
@@ -34,6 +35,7 @@ void setup()
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
   player = new Player(new PVector(width/2-blockSize/2,0));
   particles = new ArrayList<Emitter>();
+  spriteManager = new SpriteManager();
   
   //inventory
   inventoryIndex = 0;
@@ -273,11 +275,11 @@ Block newBlock(String type, float x, float y, float scale)
   {
     return new BlockWater(x,y,scale);
   }
-  else if (type.equals("block.leaf.generated"))
+  else if (type.startsWith("block.leaf.generated"))
   {
     return new BlockLeaf(x,y,scale,true);
   }
-  else if (type.equals("block.leaf.placed"))
+  else if (type.startsWith("block.leaf.placed"))
   {
     return new BlockLeaf(x,y,scale,false);
   }

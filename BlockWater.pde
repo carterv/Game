@@ -23,7 +23,7 @@ class BlockWater extends Block
       {
         blocks[x-1][y] = newBlock("block.water", (x-1)*blockSize, y*blockSize, 1);
       }
-      if (y < blocks[0].length-1 && blocks[x][y+1] == null)
+      if (y < blocks[0].length-1 && (blocks[x][y+1] == null || blocks[x][y+1].getType().startsWith("emitter.")))
       {
         blocks[x][y+1] = newBlock("block.water", x*blockSize, (y+1)*blockSize, 1);
       }
