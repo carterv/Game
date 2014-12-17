@@ -49,6 +49,8 @@ void setup()
   creativeInventory.add(newBlock("block.sand",2,5*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.glass",2,6*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("fluid.water",2,7*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("emitter.stream",2,8*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("emitter.mouse",2,9*2*(blockSize+2)+2,2));
 }
 
 void draw()
@@ -269,5 +271,7 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.log")) return new BlockLog(x,y,scale);
   else if (type.equals("block.sand")) return new BlockSand(x,y,scale);
   else if (type.equals("fluid.water")) return new FluidWater(x,y,scale);
+  else if (type.equals("emitter.stream")) return new EmitterStream(x,y,scale);
+  else if (type.equals("emitter.mouse")) return new EmitterMouse(x,y,scale);
   else return null;
 }
