@@ -44,7 +44,7 @@ void setup()
   creativeInventory.add(newBlock("block.stone",2,2,2));
   creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.water",2,3*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("fluid.water",2,3*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.leaf.placed",2,4*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.log",2,5*2*(blockSize+2)+2,2));
   creativeInventory.add(newBlock("block.sand",2,6*2*(blockSize+2)+2,2));
@@ -271,9 +271,9 @@ Block newBlock(String type, float x, float y, float scale)
   {
     return new BlockGrass(x,y,scale);
   }
-  else if (type.equals("block.water"))
+  else if (type.equals("fluid.water"))
   {
-    return new BlockWater(x,y,scale);
+    return new FluidWater(x,y,scale);
   }
   else if (type.startsWith("block.leaf.generated"))
   {
