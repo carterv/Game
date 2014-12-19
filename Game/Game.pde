@@ -6,6 +6,7 @@ ArrayList<Block> survivalInventory;
 ArrayList<Emitter> particles;
 Player player;
 SpriteManager spriteManager;
+int timer;
 
 //game options, mostly constants
 float blockSize, playerHeight, playerWidth;
@@ -81,6 +82,10 @@ void draw()
   
   //draw the inventory
   renderInventory();
+  
+  timer += 1;
+  timer %= 30;
+  if (timer == 0) refreshLights();
 }
 
 void mousePressed()
@@ -116,16 +121,6 @@ void keyPressed()
     if (x >= 0 && y >= 0 && x < blocks.length-1 && y < blocks[0].length-1)
     { 
       if ((blocks[x][y] == null || !blocks[x][y].isSolid()) && (blocks[x][y+1] == null || !blocks[x][y+1].isSolid())) player.setLocation(new PVector(blockSize*x,blockSize*y));
-    }
-  }
-  else if (key == CODED && keyCode == ALT)
-  {
-    for (int i = 0; i < blocks.length; i++)
-    {
-      for (int j = 0; j < blocks[0].length; j++)
-      {
-        if (blocks[i][j] != null) blocks[i][j].updateLightLevel();
-      }
     }
   }
 }
@@ -192,6 +187,17 @@ void renderLights()
       int l = lights[i][j];
       fill(0,255*(10-(l > 10 ? 10 : l))/10);
       rect(i*blockSize,j*blockSize,blockSize,blockSize);
+    }
+  }
+}
+
+void refreshLights()
+{
+  for (int i = 0; i < blocks.length; i++)
+  {
+    for (int j = 0; j < blocks[0].length; j++)
+    {
+      if (blocks[i][j] != null) blocks[i][j].updateLightLevel();
     }
   }
 }
