@@ -48,6 +48,6 @@ class EmitterBlockDestroy extends Emitter
   Particle newParticle()
   {
     PVector pos = new PVector((int)random(blockSize),(int)random(blockSize));
-    return new ParticleBlockDestroy(new PVector(position.x+pos.x,position.y+pos.y), sprite.pixels[(int)(pos.y*sprite.width+pos.x)], lightLevel);
+    return new ParticleBlockDestroy(new PVector(position.x+pos.x,position.y+pos.y), sprite.pixels[(int)((pos.y)*sprite.width+(pos.x))], lightLevel);
   }
 }

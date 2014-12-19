@@ -27,7 +27,23 @@ abstract class Block
 
   void check()
   {
-    updateLightLevel();
+    int x = (int)(position.x/blockSize);
+    int y = (int)(position.y/blockSize);
+    int i0 = (x-10 >= 0 ? -10 : 0);
+    int i1 = (x+10 < blocks.length ? 10 : blocks.length-x-1);
+    int j0 = (y-10 >= 0 ? -10 : 0);
+    int j1 = (y+10 < blocks[0].length ? 10 : blocks[0].length-y-1);
+    for (int i = i0; i < i1; i++)
+    {
+      for (int j = j0; j < j1; j++)
+      {
+        if (blocks[x+i][y+j] != null)
+        {
+           if (sqrt(sq(i)+sq(j)) <= 10) blocks[x+i][y+j].updateLightLevel();
+        } 
+      }
+    }
+    //updateLightLevel();
   }
 
   void draw()
@@ -60,9 +76,9 @@ abstract class Block
       if (blocks[x+1][y] != null) blocks[x+1][y].check();
       //if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
     }
-    for (; y < blocks[0].length; y++)
+    for (int i = 0; i < blocks[0].length; i++)
     {
-      if (blocks[x][y] != null) blocks[x][y].check();
+      if (blocks[x][i] != null && i != y) blocks[x][i].check();
     }
   }
 
@@ -110,7 +126,19 @@ abstract class Block
     int y = (int)(position.y/blockSize)-1;
     for (; y >= 0; y--)
     {
-      if (blocks[x][y] != null)
+      if (blocks[x][y] != null && !blocks[x][y].isTransparent())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  boolean canSeeSky(int x, int y)
+  {
+    for (; y >= 0; y--)
+    {
+      if (blocks[x][y] != null && !blocks[x][y].isTransparent())
       {
         return false;
       }
@@ -128,7 +156,7 @@ abstract class Block
       count += 1;
       if (blocks[x][y] != null)
       {
-        if (blocks[x][y].isTransparent()) count -= 0.5;
+        if (blocks[x][y].isTransparent()) count -= 1;
         if (blocks[x][y].canSeeSky()) break;
       }
     }
@@ -146,14 +174,47 @@ abstract class Block
       int x = (int)(position.x/blockSize);
       int y = (int)(position.y/blockSize);
       int d = 10-getDepth();
-      int u, b, l, r;
-      u = b = l = r = -1;
-      if (x > 0 && blocks[x-1][y] != null) l = blocks[x-1][y].getLightLevel();
-      if (y > 0 && blocks[x][y-1] != null) u = blocks[x][y-1].getLightLevel()-1;
-      if (x < blocks.length-1 && blocks[x+1][y] != null) r = blocks[x+1][y].getLightLevel();
-      if (y > blocks[0].length-1 && blocks[x][y+1] != null) b = blocks[x][y+1].getLightLevel()+1;
-      int a = (int)((u+b+l+r)/r);
-      if (a > d) d = a;
+      int[] i = new int[4];
+      for (int j = 0; j < 4; j++) i[j] = 0;
+      int count = 0;
+      if (x > 0 && blocks[x-1][y] != null)
+      {
+        count += 1;
+        i[0] = blocks[x-1][y].getLightLevel()-1;
+        if (i[0] > d) d = i[0];
+      }
+      else if (canSeeSky(x-1,y))
+      {
+        if (9 > d) d = 9;
+      }
+      if (y > 0 && blocks[x][y-1] != null)
+      {
+        count += 1;
+        i[1] = blocks[x][y-1].getLightLevel()-1;
+        if (i[1] > d) d = i[1];
+      }
+      else if (canSeeSky(x,y-1))
+      {
+        if (9 > d) d = 9;
+      }
+      if (x < blocks.length-1 && blocks[x+1][y] != null) 
+      {
+        count += 1;
+        i[2] = blocks[x+1][y].getLightLevel()-1;
+        if (i[2] > d) d = i[2];
+      }
+      else if (canSeeSky(x+1,y))
+      {
+        if (9 > d) d = 9;
+      }
+      if (y > blocks[0].length-1 && blocks[x][y+1] != null) 
+      {
+        count += 1;
+        i[3] = blocks[x][y+1].getLightLevel()-1;
+        if (i[3] > d) d = i[3];
+      }
+      /*int a = max(i);//count > 0 ? (int)((u+b+l+r)/count) : 0;
+      if (a > d) d = a;*/
       if (d > 2) lightLevel = d;
       else lightLevel = 2;
       //lightLevel = d > 2 ? d : 2;
