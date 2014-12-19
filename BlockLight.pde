@@ -10,6 +10,6 @@ class BlockLight extends Block
   
   void updateLightLevel()
   {
-    lightLevel = 10;
+    setLightLevel(10);
   }
 }

@@ -2,7 +2,6 @@ abstract class Block
 {
   boolean solid;
   boolean transparent;
-  int lightLevel;
   float friction;
   float drawSize;
   PImage sprite;
@@ -22,7 +21,6 @@ abstract class Block
 
   void update() 
   {
-    //updateLightLevel();
   }
 
   void check()
@@ -43,7 +41,6 @@ abstract class Block
         } 
       }
     }
-    //updateLightLevel();
   }
 
   void draw()
@@ -54,7 +51,8 @@ abstract class Block
   
   void drawLight()
   {
-    fill(0,255*(10-lightLevel)/10);
+    int l = getLightLevel();
+    fill(0,255*(10-(l > 10 ? 10 : l))/10);
     rect(position.x,position.y,drawSize,drawSize);
   }
 
@@ -79,6 +77,25 @@ abstract class Block
     for (int i = 0; i < blocks[0].length; i++)
     {
       if (blocks[x][i] != null && i != y) blocks[x][i].updateLightLevel();
+      else if (blocks[x][i] == null) 
+      {
+        if (!canSeeSky(x,i))
+        {
+          int d = 10-getBlockDepth(x,i,true);
+          if (d < 1) d = 1;
+          lights[x][i] = d;
+        }
+        else if (canSeeSky(x,i) && !canSeeClearSky(x,i))
+        {
+          int d = 10-getBlockDepth(x,i,true);
+          if (d < 1) d = 1;
+          lights[x][i] = d;
+        }
+        else if (canSeeClearSky(x,i))
+        {
+          lights[x][i] = 10;
+        }
+      }
     }
   }
 
@@ -110,87 +127,38 @@ abstract class Block
   
   int getLightLevel()
   {
-    return lightLevel;
+    return lights[(int)(position.x/blockSize)][(int)(position.y/blockSize)];
   }
   
   void setLightLevel(int i)
   {
-    if (i > 10) lightLevel = 10;
-    else if (i < 0) lightLevel = 0;
-    else lightLevel = i;
-  }
-  
-  int getDepth()
-  {
-    int x = (int)(position.x/blockSize);
-    int y = (int)(position.y/blockSize);
-    int count = 0;
-    for (; y >= 0; y--)
-    {
-      count += 1;
-      if (blocks[x][y] != null)
-      {
-        if (blocks[x][y].isTransparent()) count -= 1;
-        if (canSeeSky(x,y)) break;
-      }
-    }
-    return count;
+    lights[(int)(position.x/blockSize)][(int)(position.y/blockSize)] = i;
   }
   
   void updateLightLevel()
   {
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
-    if (canSeeSky(x,y))
+    int d = 0;
+    if (canSeeSky(x,y) && canSeeClearSky(x,y))
     {
-      if (canSeeClearSky(x,y)) lightLevel = 10;
-      else lightLevel = 9;
+      d = 10;
     }
-    else
+    else if (canSeeSky(x,y) && !canSeeClearSky(x,y))
     {
-      int d = 10-getDepth();
-      int[] i = new int[4];
-      for (int j = 0; j < 4; j++) i[j] = 0;
-      int count = 0;
-      if (x > 0 && blocks[x-1][y] != null)
-      {
-        count += 1;
-        i[0] = blocks[x-1][y].getLightLevel()-1;
-        if (i[0] > d) d = i[0];
-      }
-      else if (x > 0 && canSeeSky(x-1,y))
-      {
-        if (9 > d) d = 9;
-      }
-      if (y > 0 && blocks[x][y-1] != null)
-      {
-        count += 1;
-        i[1] = blocks[x][y-1].getLightLevel()-1;
-        if (i[1] > d) d = i[1];
-      }
-      else if (y > 0 && canSeeSky(x,y-1))
-      {
-        if (9 > d) d = 9;
-      }
-      if (x < blocks.length-1 && blocks[x+1][y] != null) 
-      {
-        count += 1;
-        i[2] = blocks[x+1][y].getLightLevel()-1;
-        if (i[2] > d) d = i[2];
-      }
-      else if (x < blocks.length-1 && canSeeSky(x+1,y))
-      {
-        if (9 > d) d = 9;
-      }
-      if (y > blocks[0].length-1 && blocks[x][y+1] != null) 
-      {
-        count += 1;
-        i[3] = blocks[x][y+1].getLightLevel()-1;
-        if (i[3] > d) d = i[3];
-      }
-      if (d > 2) lightLevel = d;
-      else lightLevel = 2;
+      d = getBlockDepth(x,y,true);
+      if (d > 9) d = 9;
+      d = 10-d+1;
     }
+    else if ((y > 0) && lights[x][y-1]-1 > d)
+    {
+      d = lights[x][y-1]-1;
+    }
+    if ((x > 0) && lights[x-1][y]-1 > d) d = lights[x-1][y]-1;
+    if ((x < lights.length-1) && lights[x+1][y]-1 > d) d = lights[x+1][y]-1;
+    if ((y < lights[0].length-1) && lights[x][y+1]-1 > d) d = lights[x][y+1]-1;
+    if (d < 1) d = 1;
+    setLightLevel(d);
   }
 }
 

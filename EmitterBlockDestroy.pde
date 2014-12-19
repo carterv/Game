@@ -8,7 +8,7 @@ class EmitterBlockDestroy extends Emitter
     sprite = base.get();
     type = "emitter.blockdestroyed";
     lightLevel = light;
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 25; i++)
     {
       particles.add(newParticle());
     }

@@ -6,14 +6,14 @@ class ParticleBlockDestroy extends Particle
   {
     super(location,c);
     velocity = new PVector(random(1)-0.5,random(2)+0.5);
-    life = 50;
+    life = 25;
     lightLevel = light;
   }
   
   void update()
   {
     //fade
-    drawColor = (drawColor & 0xffffff) | ((4*life+50) << 24);
+    drawColor = (drawColor & 0xffffff) | ((8*life+50) << 24);
     //update position
     float xVel = velocity.x;
     float yVel = velocity.y;
