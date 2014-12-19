@@ -14,7 +14,7 @@ class FluidWater extends Fluid
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     boolean flag = false;
-    if (y > 0 && drawSize/blockSize == 1)
+    if (y > 0)
     {
       flag = blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("emitter.");
     }
@@ -27,5 +27,6 @@ class FluidWater extends Fluid
     {
       rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
     }
+    drawLight();
   }
 }

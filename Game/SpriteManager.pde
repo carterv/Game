@@ -95,6 +95,17 @@ class SpriteManager
     sprites.put("block.leaf.placed.b",sprite.get());
     sprite = spriteBase.get();
     
+    //block.light
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        sprite.pixels[j*w+i] = color(255); 
+      }
+    }
+    sprites.put("block.light",sprite.get());
+    sprite = spriteBase.get();
+    
     //block.log
     for (int i = 0; i < w; i++)
     {
@@ -133,6 +144,24 @@ class SpriteManager
       }
     }
     sprites.put("block.stone",sprite.get());
+    sprite = spriteBase.get();
+    
+    //block.tnt
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        if (i < w/5 || (i >= 2*w/5 && i < 3*w/5) || i >= 4*w/5)
+        {
+          sprite.pixels[j*w+i] = color(211,6,6);
+        }
+        else
+        {
+          sprite.pixels[j*w+i] = color(163,0,0);
+        }
+      }
+    }
+    sprites.put("block.tnt",sprite.get());
     sprite = spriteBase.get();
   }
   

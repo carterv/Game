@@ -1,5 +1,6 @@
 //controller variables
 Block[][] blocks;
+int[][] lights;
 ArrayList<Block> creativeInventory;
 ArrayList<Block> survivalInventory;
 ArrayList<Emitter> particles;
@@ -33,6 +34,14 @@ void setup()
   
   //controller variables
   blocks = new Block[(int)(width/blockSize)][(int)(height/blockSize)];
+  lights = new int[(int)(width/blockSize)][(int)(height/blockSize)];
+  for (int i = 0; i < lights.length; i++)
+  {
+    for (int j = 0; j < lights[0].length; j++)
+    {
+      lights[i][j] = 10;
+    }
+  }
   player = new Player(new PVector(width/2-blockSize/2,0));
   particles = new ArrayList<Emitter>();
   spriteManager = new SpriteManager();
@@ -41,16 +50,18 @@ void setup()
   inventoryIndex = 0;
   //creative inventory blocklist
   creativeInventory = new ArrayList<Block>();
-  creativeInventory.add(newBlock("block.stone",2,2,2));
-  creativeInventory.add(newBlock("block.grass",2,2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.dirt",2,2*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.leaf.placed",2,3*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.log",2,4*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.sand",2,5*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("block.glass",2,6*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("fluid.water",2,7*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("emitter.stream",2,8*2*(blockSize+2)+2,2));
-  creativeInventory.add(newBlock("emitter.mouse",2,9*2*(blockSize+2)+2,2));
+  creativeInventory.add(newBlock("block.stone",2,2,1));
+  creativeInventory.add(newBlock("block.grass",2,(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.dirt",2,2*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.leaf.placed",2,3*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.log",2,4*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.sand",2,5*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.glass",2,6*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("fluid.water",2,7*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.tnt",2,8*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.light",2,9*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("emitter.stream",2,10*(blockSize+4)+2,2));
+  creativeInventory.add(newBlock("emitter.mouse",2,11*(blockSize+4)+2,2));
 }
 
 void draw()
@@ -63,6 +74,9 @@ void draw()
   
   //draw and update the player
   player.update();
+  
+  //DEBUG: render the light levels
+  //renderLights();
     
   //draw the blocks
   renderBlocks();
@@ -104,6 +118,16 @@ void keyPressed()
     if (x >= 0 && y >= 0 && x < blocks.length-1 && y < blocks[0].length-1)
     { 
       if ((blocks[x][y] == null || !blocks[x][y].isSolid()) && (blocks[x][y+1] == null || !blocks[x][y+1].isSolid())) player.setLocation(new PVector(blockSize*x,blockSize*y));
+    }
+  }
+  else if (key == CODED && keyCode == ALT)
+  {
+    for (int i = 0; i < blocks.length; i++)
+    {
+      for (int j = 0; j < blocks[0].length; j++)
+      {
+        if (blocks[i][j] != null) blocks[i][j].updateLightLevel();
+      }
     }
   }
 }
@@ -161,12 +185,25 @@ void renderBlocks()
   }
 }
 
+void renderLights()
+{
+  for (int i = 0; i < lights.length; i++)
+  {
+    for (int j = 0; j < lights[0].length; j++)
+    {
+      int l = lights[i][j];
+      fill(0,255*(10-(l > 10 ? 10 : l))/10);
+      rect(i*blockSize,j*blockSize,blockSize,blockSize);
+    }
+  }
+}
+
 void renderInventory()
 {
   fill(0,128);
-  rect(0,0,2*blockSize+4,(2*blockSize+4)*creativeInventory.size()+2);
+  rect(0,0,blockSize+4,(blockSize+4)*creativeInventory.size()+2);
   fill(255,128);
-  rect(0,(int)inventoryIndex*(2*blockSize+4),2*blockSize+4,2*blockSize+4);
+  rect(0,(int)inventoryIndex*(blockSize+4),blockSize+4,blockSize+4);
   for (Block b : creativeInventory)
   {
     b.draw();
@@ -211,7 +248,7 @@ void doInput()
         PImage sprite = b.getSprite();
         if (sprite != null)
         {
-          blocks[mx][my] = new EmitterBlockDestroy(mx*blockSize,my*blockSize,1,sprite);
+          blocks[mx][my] = new EmitterBlockDestroy(mx*blockSize,my*blockSize,1,sprite, b.getLightLevel());
         }
         else blocks[mx][my] = null;
         b.forceCheck();
@@ -260,6 +297,45 @@ void doInput()
   }
 }
 
+boolean canSeeSky(int x, int y)
+{
+  for (y -= 1; y >= 0; y--)
+  {
+    if (blocks[x][y] != null && !blocks[x][y].isTransparent())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+boolean canSeeClearSky(int x, int y)
+{
+  for (y -= 1; y >=0; y--)
+  {
+    if (blocks[x][y] != null && !blocks[x][y].getType().startsWith("emitter."))
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+int getBlockDepth(int x, int y, boolean includeTransparent)
+{
+  int count = 0;
+  for (; y >= 0; y--)
+  {
+    if (blocks[x][y] != null)
+    {
+      count += 1;
+      if (blocks[x][y].isTransparent() && !includeTransparent) count -= 1;
+      if (canSeeClearSky(x,y)) break;
+    }
+  }
+  return count;
+}
+
 Block newBlock(String type, float x, float y, float scale)
 {
   if (type.equals("block.stone")) return new BlockStone(x,y,scale);
@@ -270,6 +346,8 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.startsWith("block.leaf.placed")) return new BlockLeaf(x,y,scale,false);
   else if (type.equals("block.log")) return new BlockLog(x,y,scale);
   else if (type.equals("block.sand")) return new BlockSand(x,y,scale);
+  else if (type.equals("block.tnt")) return new BlockTNT(x,y,scale);
+  else if (type.equals("block.light")) return new BlockLight(x,y,scale);
   else if (type.equals("fluid.water")) return new FluidWater(x,y,scale);
   else if (type.equals("emitter.stream")) return new EmitterStream(x,y,scale);
   else if (type.equals("emitter.mouse")) return new EmitterMouse(x,y,scale);
