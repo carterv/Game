@@ -78,7 +78,7 @@ abstract class Block
     }
     for (int i = 0; i < blocks[0].length; i++)
     {
-      if (blocks[x][i] != null && i != y) blocks[x][i].check();
+      if (blocks[x][i] != null && i != y) blocks[x][i].updateLightLevel();
     }
   }
 
@@ -203,7 +203,7 @@ abstract class Block
         i[2] = blocks[x+1][y].getLightLevel()-1;
         if (i[2] > d) d = i[2];
       }
-      else if (x < blocks.length && canSeeSky(x+1,y))
+      else if (x < blocks.length-1 && canSeeSky(x+1,y))
       {
         if (9 > d) d = 9;
       }
