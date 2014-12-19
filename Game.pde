@@ -260,6 +260,18 @@ void doInput()
   }
 }
 
+boolean canSeeSky(int x, int y)
+{
+  for (; y >= 0; y--)
+  {
+    if (blocks[x][y] != null && !blocks[x][y].isTransparent())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 Block newBlock(String type, float x, float y, float scale)
 {
   if (type.equals("block.stone")) return new BlockStone(x,y,scale);

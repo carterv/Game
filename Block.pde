@@ -120,31 +120,14 @@ abstract class Block
     else lightLevel = i;
   }
   
-  boolean canSeeSky()
+  boolean uncovered()
   {
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize)-1;
-    for (; y >= 0; y--)
-    {
-      if (blocks[x][y] != null && !blocks[x][y].isTransparent())
-      {
-        return false;
-      }
-    }
-    return true;
+    return canSeeSky(x,y);
   }
   
-  boolean canSeeSky(int x, int y)
-  {
-    for (; y >= 0; y--)
-    {
-      if (blocks[x][y] != null && !blocks[x][y].isTransparent())
-      {
-        return false;
-      }
-    }
-    return true;
-  }
+  
   
   int getDepth()
   {
@@ -157,7 +140,7 @@ abstract class Block
       if (blocks[x][y] != null)
       {
         if (blocks[x][y].isTransparent()) count -= 1;
-        if (blocks[x][y].canSeeSky()) break;
+        if (blocks[x][y].uncovered()) break;
       }
     }
     return count;
@@ -165,7 +148,7 @@ abstract class Block
   
   void updateLightLevel()
   {
-    if (canSeeSky())
+    if (uncovered())
     {
       lightLevel = 10;
     }
