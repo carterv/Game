@@ -50,6 +50,7 @@ void setup()
   creativeInventory.add(newBlock("block.glass",2,6*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("fluid.water",2,7*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("block.tnt",2,8*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.light",2,9*(blockSize+4)+2,1));
 }
 
 void draw()
@@ -270,6 +271,7 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.log")) return new BlockLog(x,y,scale);
   else if (type.equals("block.sand")) return new BlockSand(x,y,scale);
   else if (type.equals("block.tnt")) return new BlockTNT(x,y,scale);
+  else if (type.equals("block.light")) return new BlockLight(x,y,scale);
   else if (type.equals("fluid.water")) return new FluidWater(x,y,scale);
   else return null;
 }
