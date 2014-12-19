@@ -39,6 +39,7 @@ class BlockSand extends Block
   
   void check()
   {
+    super.check();
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     canFall = (drawSize/blockSize == 1 && y+1 < blocks[0].length && (blocks[x][y+1] == null || (!blocks[x][y+1].isSolid() && !(blocks[x][y+1] instanceof BlockLeaf))));

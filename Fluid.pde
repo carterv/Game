@@ -50,6 +50,7 @@ class Fluid extends Block
   
   void check()
   {
+    super.check();
     shouldSpread = true;
   }
 }

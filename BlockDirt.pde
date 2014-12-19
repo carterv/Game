@@ -43,6 +43,7 @@ class BlockDirt extends Block
   
   void check()
   {
+    super.check();
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     if (y > 0) surroundings[0] = blocks[x][y-1];
