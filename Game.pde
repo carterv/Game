@@ -262,9 +262,21 @@ void doInput()
 
 boolean canSeeSky(int x, int y)
 {
-  for (; y >= 0; y--)
+  for (y -= 1; y >= 0; y--)
   {
     if (blocks[x][y] != null && !blocks[x][y].isTransparent())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+boolean canSeeClearSky(int x, int y)
+{
+  for (y -= 1; y >=0; y--)
+  {
+    if (blocks[x][y] != null && !blocks[x][y].getType().startsWith("emitter."))
     {
       return false;
     }
