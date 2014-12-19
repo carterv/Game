@@ -1,16 +1,19 @@
 class ParticleBlockDestroy extends Particle
 {
-  ParticleBlockDestroy(PVector location, color c)
+  int lightLevel;
+  
+  ParticleBlockDestroy(PVector location, color c, int light)
   {
     super(location,c);
     velocity = new PVector(random(1)-0.5,random(2)+0.5);
-    life = 50;
+    life = 25;
+    lightLevel = light;
   }
   
   void update()
   {
     //fade
-    drawColor = (drawColor & 0xffffff) | ((4*life+50) << 24);
+    drawColor = (drawColor & 0xffffff) | ((8*life+50) << 24);
     //update position
     float xVel = velocity.x;
     float yVel = velocity.y;
@@ -26,7 +29,7 @@ class ParticleBlockDestroy extends Particle
       velocity.x = -xVel/3;
     }
     //y-axis collision detection
-    if (abs(yVel) >= 1) position.y += yVel;
+    if (abs(yVel) >= 0.5) position.y += yVel;
     if (collided())
     {
       float d = abs(yVel)/yVel;
@@ -41,6 +44,13 @@ class ParticleBlockDestroy extends Particle
     velocity.y += 0.05;
     //update life countdown
     life -= 1;
+  }
+  
+  void draw()
+  {
+    super.draw();
+    fill(0, 255*(10-lightLevel)/10);
+    ellipse(position.x,position.y,2,2);
   }
   
   boolean collided()

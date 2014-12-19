@@ -22,6 +22,7 @@ class BlockLeaf extends Block
   
   void update()
   {
+    super.update();
     if (type.startsWith("block.leaf.generated"))
     {
       int x = (int)(position.x/blockSize);

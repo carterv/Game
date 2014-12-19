@@ -1,11 +1,14 @@
 class EmitterBlockDestroy extends Emitter
 {
-  EmitterBlockDestroy(float x, float y, float scale, PImage base)
+  int lightLevel; 
+  
+  EmitterBlockDestroy(float x, float y, float scale, PImage base, int light)
   {
     super(x,y,scale,10,color(255));
     sprite = base.get();
     type = "emitter.blockdestroyed";
-    for (int i = 0; i < 50; i++)
+    lightLevel = light;
+    for (int i = 0; i < 25; i++)
     {
       particles.add(newParticle());
     }
@@ -45,6 +48,6 @@ class EmitterBlockDestroy extends Emitter
   Particle newParticle()
   {
     PVector pos = new PVector((int)random(blockSize),(int)random(blockSize));
-    return new ParticleBlockDestroy(new PVector(position.x+pos.x,position.y+pos.y), sprite.pixels[(int)(pos.y*sprite.width+pos.x)]);
+    return new ParticleBlockDestroy(new PVector(position.x+pos.x,position.y+pos.y), sprite.pixels[(int)((pos.y)*sprite.width+(pos.x))], lightLevel);
   }
 }

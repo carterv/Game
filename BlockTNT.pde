@@ -26,6 +26,7 @@ class BlockTNT extends Block
   
   void update()
   {
+    super.update();
     if (primed == true)
     {
       life -= 1;
@@ -61,6 +62,7 @@ class BlockTNT extends Block
   
   void check()
   {
+    super.check();
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     canFall = (drawSize/blockSize == 1 && y+1 < blocks[0].length && (blocks[x][y+1] == null || (!blocks[x][y+1].isSolid() && !(blocks[x][y+1] instanceof BlockLeaf))));
@@ -87,7 +89,8 @@ class BlockTNT extends Block
             }
             else if (b.getSprite() != null)
             {
-              blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite());
+              blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite(), b.getLightLevel());
+              b.check();
             }
             else 
             {
