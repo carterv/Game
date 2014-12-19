@@ -60,8 +60,8 @@ void setup()
   creativeInventory.add(newBlock("fluid.water",2,7*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("block.tnt",2,8*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("block.light",2,9*(blockSize+4)+2,1));
-  creativeInventory.add(newBlock("emitter.stream",2,10*(blockSize+4)+2,2));
-  creativeInventory.add(newBlock("emitter.mouse",2,11*(blockSize+4)+2,2));
+  creativeInventory.add(newBlock("emitter.stream",2,10*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("emitter.mouse",2,11*(blockSize+4)+2,1));
 }
 
 void draw()

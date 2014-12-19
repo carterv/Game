@@ -11,7 +11,7 @@ class EmitterMouse extends Emitter
   
   void draw()
   {
-    super.draw();
+    if (this.isAlive()) super.draw();
     fill(systemColor);
     rect(position.x+drawSize/4,position.y+drawSize/4,drawSize/2,drawSize/2);
   }
@@ -35,6 +35,6 @@ class EmitterMouse extends Emitter
   
   boolean isAlive()
   {
-    return true;
+    return (position.x%blockSize == 0 && position.y%blockSize == 0);
   }
 }
