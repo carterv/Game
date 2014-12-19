@@ -26,6 +26,7 @@ class BlockTNT extends Block
   
   void update()
   {
+    super.update();
     if (primed == true)
     {
       life -= 1;
@@ -87,7 +88,7 @@ class BlockTNT extends Block
             }
             else if (b.getSprite() != null)
             {
-              blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite());
+              blocks[x+i][y+j] = new EmitterBlockDestroy((x+i)*blockSize, (y+j)*blockSize, drawSize/blockSize, b.getSprite(), b.getLightLevel());
             }
             else 
             {

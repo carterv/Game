@@ -13,6 +13,7 @@ class BlockSand extends Block
   
   void update()
   {
+    super.update();
     if (canFall)
     {
       timer -= 1;

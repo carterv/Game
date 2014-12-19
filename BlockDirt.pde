@@ -15,6 +15,7 @@ class BlockDirt extends Block
   
   void update()
   {
+    super.update();
     int x = (int)(position.x/blockSize);
     int y = (int)(position.y/blockSize);
     if (y == 0) return;

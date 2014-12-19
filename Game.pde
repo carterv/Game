@@ -210,7 +210,7 @@ void doInput()
         PImage sprite = b.getSprite();
         if (sprite != null)
         {
-          blocks[mx][my] = new EmitterBlockDestroy(mx*blockSize,my*blockSize,1,sprite);
+          blocks[mx][my] = new EmitterBlockDestroy(mx*blockSize,my*blockSize,1,sprite, b.getLightLevel());
         }
         else blocks[mx][my] = null;
         b.forceCheck();

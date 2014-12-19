@@ -1,6 +1,8 @@
 abstract class Block
 {
   boolean solid;
+  boolean transparent;
+  int lightLevel;
   float friction;
   float drawSize;
   PImage sprite;
@@ -13,17 +15,28 @@ abstract class Block
     drawSize = scale*blockSize;
     friction = 3;
     solid = true;
+    transparent = false;
     type = "block.null";
-    this.forceCheck();
+    updateLightLevel();
   }
 
-  void update() {}
+  void update() 
+  {
+    updateLightLevel();
+  }
 
   void check() {}
 
   void draw()
   {
     if (sprite != null) image(sprite, position.x, position.y);
+    drawLight();
+  }
+  
+  void drawLight()
+  {
+    fill(0,255*(10-lightLevel)/10);
+    rect(position.x,position.y,drawSize,drawSize);
   }
 
   void forceCheck()
@@ -61,10 +74,70 @@ abstract class Block
     return solid;
   }
   
+  boolean isTransparent()
+  {
+    return !solid || transparent;
+  }
+  
   PImage getSprite()
   {
     if (sprite != null) return sprite.get();
     else return null;
+  }
+  
+  int getLightLevel()
+  {
+    return lightLevel;
+  }
+  
+  void setLightLevel(int i)
+  {
+    if (i > 10) lightLevel = 10;
+    else if (i < 0) lightLevel = 0;
+    else lightLevel = i;
+  }
+  
+  boolean canSeeSky()
+  {
+    int x = (int)(position.x/blockSize);
+    int y = (int)(position.y/blockSize)-1;
+    for (; y >= 0; y--)
+    {
+      if (blocks[x][y] != null)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  int getDepth()
+  {
+    int x = (int)(position.x/blockSize);
+    int y = (int)(position.y/blockSize);
+    int count = 0;
+    for (; y >= 0; y--)
+    {
+      //if (blocks[x][y] == null) break;
+      if (blocks[x][y] != null)
+      {
+        if (!blocks[x][y].isTransparent()) count += 1;
+      }
+    }
+    return count;
+  }
+  
+  void updateLightLevel()
+  {
+    if (canSeeSky())
+    {
+      lightLevel = 10;
+    }
+    else
+    {
+      int d = 10-getDepth();
+      lightLevel = d > 2 ? d : 2;
+    }
   }
 }
 

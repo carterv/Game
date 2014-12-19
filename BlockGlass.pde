@@ -5,5 +5,6 @@ class BlockGlass extends Block
     super(x,y,scale);
     type = "block.glass";
     sprite = spriteManager.getSprite(type,drawSize);
+    transparent = true;
   }
 }

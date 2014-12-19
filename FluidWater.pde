@@ -27,5 +27,6 @@ class FluidWater extends Fluid
     {
       rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
     }
+    drawLight();
   }
 }
