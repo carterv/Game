@@ -213,11 +213,8 @@ abstract class Block
         i[3] = blocks[x][y+1].getLightLevel()-1;
         if (i[3] > d) d = i[3];
       }
-      /*int a = max(i);//count > 0 ? (int)((u+b+l+r)/count) : 0;
-      if (a > d) d = a;*/
       if (d > 2) lightLevel = d;
       else lightLevel = 2;
-      //lightLevel = d > 2 ? d : 2;
     }
   }
 }
