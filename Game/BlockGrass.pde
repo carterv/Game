@@ -8,6 +8,17 @@ class BlockGrass extends Block
     type = "block.grass";
     timer = 1;
     sprite = spriteManager.getSprite(type,drawSize);
+    x = (int)(position.x/blockSize);
+    y = (int)(position.y/blockSize);
+    if (y != 0 && blocks[(int)x][(int)y-1] != null && !blocks[(int)x][(int)y-1].getType().startsWith("emitter."))
+    {
+      timer -= 1;
+      if (timer <= 0)
+      {
+        blocks[(int)x][(int)y] = newBlock("block.dirt",position.x,position.y,drawSize/blockSize);
+        blocks[(int)x][(int)y].forceCheck();
+      }
+    }
   }
   
   void update()
