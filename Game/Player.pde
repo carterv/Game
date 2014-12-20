@@ -1,7 +1,8 @@
 class Player
 {
-  //draw size
+  //draw variables
   PVector hitbox;
+  float lightLevel;
   //movement vectors
   PVector position, velocity, acceleration;
   
@@ -12,6 +13,7 @@ class Player
     position = location.get();
     velocity = new PVector();
     acceleration = new PVector(0,0.5);
+    lightLevel = 10;
   }
   
   void update()
@@ -69,12 +71,18 @@ class Player
     //add gravity
     if (velocity.y > -10) velocity.add(acceleration);
     
+    updateLightLevel();
+    
     this.draw();
   }
   
   void draw()
   {
+    noStroke();
     fill(255);
+    rect(position.x+1,position.y+1,hitbox.x-2,hitbox.y-2);
+    float l = ((lightLevel > 10 ) ? 10 : ((lightLevel < 2) ? 2 : lightLevel));
+    fill(0,255*(10-(l > 10 ? 10 : l))/10);
     rect(position.x,position.y,hitbox.x,hitbox.y);
   }
   
@@ -110,6 +118,33 @@ class Player
          || (blocks[i1][j1] != null && !blocks[i1][j1].isSolid() && !blocks[i1][j1].getType().startsWith("emitter."))
          || (blocks[i0][j2] != null && !blocks[i0][j2].isSolid() && !blocks[i0][j2].getType().startsWith("emitter."))
          || (blocks[i1][j2] != null && !blocks[i1][j2].isSolid() && !blocks[i1][j2].getType().startsWith("emitter.")));
+  }
+  
+  void updateLightLevel()
+  {
+    int i0 = (int)(position.x/blockSize);
+    int i1 = (int)((position.x + hitbox.x - 1)/blockSize);
+    int j0 = (int)(position.y/blockSize);
+    int j1 = (int)((position.y + hitbox.y/2 - 1)/blockSize);
+    int j2 = (int)((position.y + hitbox.y - 1)/blockSize);
+    int sum = lights[i0][j0] + lights[i0][j1];
+    int count = 2;
+    if (position.y%blockSize != 0 && position.y + hitbox.y < height)
+    {
+      sum += lights[i0][j2];
+      count += 1;
+    }
+    if (position.x%blockSize != 0 && position.x+hitbox.x < width)
+    {
+      sum += lights[i1][j0] + lights[i1][j1];
+      count += 2;
+      if (position.y%blockSize != 0 && position.y + hitbox.y < height)
+      {
+        sum += lights[i1][j2];
+        count += 1;
+      }
+    }
+    lightLevel = sum/count;
   }
   
   //setters and getters
