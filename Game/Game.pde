@@ -86,7 +86,7 @@ void draw()
   renderInventory();
   
   timer += 1;
-  timer %= 30;
+  timer %= 5;
   if (timer == 0) refreshLights();
 }
 
@@ -186,9 +186,12 @@ void renderLights()
   {
     for (int j = 0; j < lights[0].length; j++)
     {
-      int l = lights[i][j];
-      fill(0,255*(10-(l > 10 ? 10 : l))/10);
-      rect(i*blockSize,j*blockSize,blockSize,blockSize);
+      if (blocks[i][j] == null)
+      {
+        int l = lights[i][j];
+        fill(0,255*(10-(l > 10 ? 10 : l))/10);
+        rect(i*blockSize,j*blockSize,blockSize,blockSize);
+      }
     }
   }
 }
@@ -200,6 +203,25 @@ void refreshLights()
     for (int j = 0; j < blocks[0].length; j++)
     {
       if (blocks[i][j] != null) blocks[i][j].updateLightLevel();
+      else// if (!canSeeClearSky(i,j))
+      {
+        int d = 0;
+        if (canSeeSky(i,j))
+        {
+          d = getBlockDepth(i,j,true);
+          if (d > 9) d = 9;
+          d = 10-d+1;
+        }
+        else if ((j > 0) && lights[i][j-1]-1 > d)// && canSeeSky(i,j))
+        {
+          d = lights[i][j-1]-1;
+        }
+        if ((i > 0) && lights[i-1][j]-1 > d) d = lights[i-1][j]-1;
+        if ((i < lights.length-1) && lights[i+1][j]-1 > d) d = lights[i+1][j]-1;
+        if ((j < lights[0].length-1) && lights[i][j+1]-1 > d) d = lights[i][j+1]-1;
+        if (d < 1) d = 1;
+        lights[i][j] = d;
+      }
     }
   }
 }
@@ -207,7 +229,7 @@ void refreshLights()
 void renderInventory()
 {
   fill(0,128);
-  rect(0,0,blockSize+4,(blockSize+4)*creativeInventory.size()+2);
+  rect(0,0,blockSize+4,(blockSize+4)*creativeInventory.size());
   fill(255,128);
   rect(0,(int)inventoryIndex*(blockSize+4),blockSize+4,blockSize+4);
   for (Block b : creativeInventory)

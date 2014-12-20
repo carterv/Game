@@ -16,7 +16,8 @@ abstract class Block
     solid = true;
     transparent = false;
     type = "block.null";
-    updateLightLevel();
+    if (xpos%blockSize == 0 && ypos%blockSize == 0) updateLightLevel();
+    else setLightLevel(10);
   }
 
   void update() 
@@ -25,22 +26,6 @@ abstract class Block
 
   void check()
   {
-    int x = (int)(position.x/blockSize);
-    int y = (int)(position.y/blockSize);
-    int i0 = (x-10 >= 0 ? -10 : 0);
-    int i1 = (x+10 < blocks.length ? 10 : blocks.length-x-1);
-    int j0 = (y-10 >= 0 ? -10 : 0);
-    int j1 = (y+10 < blocks[0].length ? 10 : blocks[0].length-y-1);
-    for (int i = i0; i < i1; i++)
-    {
-      for (int j = j0; j < j1; j++)
-      {
-        if (blocks[x+i][y+j] != null)
-        {
-           if (sqrt(sq(i)+sq(j)) <= 10) blocks[x+i][y+j].updateLightLevel();
-        } 
-      }
-    }
   }
 
   void draw()
@@ -63,21 +48,21 @@ abstract class Block
     if (y > 0 && blocks[x][y-1] != null) blocks[x][y-1].check();
     if (x > 0)
     {
-      //if (y > 0 && blocks[x-1][y-1] != null) blocks[x-1][y-1].check();
+      if (y > 0 && blocks[x-1][y-1] != null) blocks[x-1][y-1].check();
       if (blocks[x-1][y] != null) blocks[x-1][y].check();
-      //if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) blocks[x-1][y+1].check();
+      if (y < blocks[0].length-1 && blocks[x-1][y+1] != null) blocks[x-1][y+1].check();
     }
     if (y < blocks[0].length-1 && blocks[x][y+1] != null) blocks[x][y+1].check();
     if (x < blocks.length-1)
     {
-      //if (y > 0 && blocks[x+1][y-1] != null) blocks[x+1][y-1].check();
+      if (y > 0 && blocks[x+1][y-1] != null) blocks[x+1][y-1].check();
       if (blocks[x+1][y] != null) blocks[x+1][y].check();
-      //if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
+      if (y < blocks[0].length-1 && blocks[x+1][y+1] != null) blocks[x+1][y+1].check();
     }
     for (int i = 0; i < blocks[0].length; i++)
     {
       if (blocks[x][i] != null && i != y) blocks[x][i].updateLightLevel();
-      else if (blocks[x][i] == null) 
+      /*else if (blocks[x][i] == null) 
       {
         if (!canSeeSky(x,i))
         {
@@ -95,7 +80,7 @@ abstract class Block
         {
           lights[x][i] = 10;
         }
-      }
+      }*/
     }
   }
 
@@ -146,7 +131,7 @@ abstract class Block
     }
     else if (canSeeSky(x,y) && !canSeeClearSky(x,y))
     {
-      d = getBlockDepth(x,y,true);
+      d = getBlockDepth(x,y,true)*2;
       if (d > 9) d = 9;
       d = 10-d+1;
     }
@@ -154,9 +139,9 @@ abstract class Block
     {
       d = lights[x][y-1]-1;
     }
-    if ((x > 0) && lights[x-1][y]-1 > d) d = lights[x-1][y]-1;
-    if ((x < lights.length-1) && lights[x+1][y]-1 > d) d = lights[x+1][y]-1;
-    if ((y < lights[0].length-1) && lights[x][y+1]-1 > d) d = lights[x][y+1]-1;
+    if ((x > 0) && lights[x-1][y]-2 > d) d = lights[x-1][y]-2;
+    if ((x < lights.length-1) && lights[x+1][y]-1 > d) d = lights[x+1][y]-2;
+    if ((y < lights[0].length-1) && lights[x][y+1]-1 > d) d = lights[x][y+1]-2;
     if (d < 1) d = 1;
     setLightLevel(d);
   }
