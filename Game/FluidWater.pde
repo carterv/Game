@@ -19,7 +19,7 @@ class FluidWater extends Fluid
       flag = blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("emitter.");
     }
     fill(0,50,200,128);
-    if (flag || drawSize/blockSize != 1)
+    if (flag || !(position.x%blockSize == 0 && position.y%blockSize == 0))
     {
       rect(position.x,position.y,drawSize,drawSize);
     }
