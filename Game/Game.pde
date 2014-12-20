@@ -356,8 +356,7 @@ int getBlockDepth(int x, int y, boolean includeTransparent)
   {
     if (blocks[x][y] != null)
     {
-      count += 1;
-      if (blocks[x][y].isTransparent() && !includeTransparent) count -= 1;
+      if (!(blocks[x][y].isTransparent() && !includeTransparent)) count += 1;
       if (canSeeClearSky(x,y)) break;
     }
   }
