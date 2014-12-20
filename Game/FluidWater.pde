@@ -22,11 +22,16 @@ class FluidWater extends Fluid
     if (flag || !(position.x%blockSize == 0 && position.y%blockSize == 0))
     {
       rect(position.x,position.y,drawSize,drawSize);
+      int l = getLightLevel();
+      fill(0,255*(10-(l > 10 ? 10 : l))/10);
+      rect(position.x,position.y,drawSize,drawSize);
     }
     else
     {
       rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
+      int l = getLightLevel();
+      fill(0,255*(10-(l > 10 ? 10 : l))/10);
+      rect(position.x,position.y+drawSize/4,drawSize,3*drawSize/4);
     }
-    drawLight();
   }
 }

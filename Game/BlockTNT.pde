@@ -68,6 +68,12 @@ class BlockTNT extends Block
     canFall = (drawSize/blockSize == 1 && y+1 < blocks[0].length && (blocks[x][y+1] == null || (!blocks[x][y+1].isSolid() && !(blocks[x][y+1] instanceof BlockLeaf))));
   }
   
+  void updateLightLevel()
+  {
+    super.updateLightLevel();
+    if (getLightLevel() < 4) setLightLevel(4);
+  }
+  
   void explode()
   {
     int x = (int)(position.x/drawSize);
