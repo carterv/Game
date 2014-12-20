@@ -131,7 +131,7 @@ abstract class Block
     }
     else if (canSeeSky(x,y) && !canSeeClearSky(x,y))
     {
-      d = getBlockDepth(x,y,true)*2;
+      d = getBlockDepth(x,y,true);
       if (d > 9) d = 9;
       d = 10-d+1;
     }
