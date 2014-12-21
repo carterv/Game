@@ -57,6 +57,33 @@ class SpriteManager
     sprites.put("block.grass",sprite.get());
     sprite = spriteBase.get();
     
+    //block.lamp
+    for (int i = 0; i < w; i++)
+    {
+      sprite.pixels[i] = color(82,54,16);
+      sprite.pixels[sprite.pixels.length-i-1] = color(82,54,16);
+    }
+    for (int j = 1; j < w-1; j++)
+    {
+      sprite.pixels[j*w] = color(82,54,16);
+      sprite.pixels[j*w+w-1] = color(82,54,16);
+      for (int i = 1; i < w-1; i++)
+      {
+        if (i == j || i == h-j-1)
+        {
+          sprite.pixels[j*w+i-1] = color(82,54,16);
+          sprite.pixels[j*w+i] = color(82,54,16);
+          sprite.pixels[j*w+i+1] = color(82,54,16);
+        }
+        else
+        {
+          sprite.pixels[j*w+i] = color(245,242,183);
+        }
+      }
+    }
+    sprites.put("block.lamp",sprite.get());
+    sprite = spriteBase.get();
+    
     //block.leaf.*.a
     for (int i = 0; i < w; i++)
     {
@@ -93,17 +120,6 @@ class SpriteManager
     }
     sprites.put("block.leaf.generated.b",sprite.get());
     sprites.put("block.leaf.placed.b",sprite.get());
-    sprite = spriteBase.get();
-    
-    //block.light
-    for (int i = 0; i < w; i++)
-    {
-      for (int j = 0; j < h; j++)
-      {
-        sprite.pixels[j*w+i] = color(255); 
-      }
-    }
-    sprites.put("block.light",sprite.get());
     sprite = spriteBase.get();
     
     //block.log

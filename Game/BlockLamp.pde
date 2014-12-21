@@ -1,9 +1,9 @@
-class BlockLight extends Block
+class BlockLamp extends Block
 {
-  BlockLight(float x, float y, float scale)
+  BlockLamp(float x, float y, float scale)
   {
     super(x,y,scale);
-    type = "block.light";
+    type = "block.lamp";
     sprite = spriteManager.getSprite(type,drawSize);
     transparent = true;
   }
