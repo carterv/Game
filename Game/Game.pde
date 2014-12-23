@@ -67,12 +67,12 @@ void draw()
 {
   fill(backgroundColor);
   rect(0,0,width,height);
-
-  //check input
-  doInput();
   
   //draw and update the player
   player.update();
+  
+  //check input
+  doInput();
   
   //DEBUG: render the light levels
   //renderLights();
@@ -269,10 +269,6 @@ void doInput()
           blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
           blocks[mx][my].check();
           blocks[mx][my].forceCheck();
-        }
-        else if (mouseX > location.x && mouseX < location.x + hitbox.x && mouseY > location.y && mouseY < location.y + hitbox.y)
-        {
-          player.setHealth(player.getHealth()-5);
         }
       }
     }

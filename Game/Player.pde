@@ -7,6 +7,8 @@ class Player
   PVector position, velocity, acceleration;
   //health
   float health;
+  color drawColor;
+  int colorStep;
   
   Player(PVector location)
   {
@@ -16,7 +18,8 @@ class Player
     velocity = new PVector();
     acceleration = new PVector(0,0.5);
     lightLevel = 10;
-    health = 100; 
+    health = 100;
+    drawColor = color(255);
   }
   
   void update()
@@ -53,7 +56,12 @@ class Player
           position.y -= yVel;
         }
         //fall damage
-        if (velocity.y > blockSize/2) setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
+        if (velocity.y > blockSize/2)
+        {
+          setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
+          drawColor = color(255,0,0);
+          colorStep = 0;
+        }
         velocity.y = 0;
         //calculate friction
         int x = (int)(position.x/blockSize);
@@ -99,17 +107,23 @@ class Player
     
     updateLightLevel();
     
+    if (drawColor != color(255))
+    {
+      drawColor = (drawColor & 0xffff0000) | (255*colorStep/30 << 8 | 255*colorStep/30);
+      //if (drawColor > color(255)) drawColor = color(255);
+      colorStep += 1;
+    }
     this.draw();
   }
   
   void draw()
   {
     noStroke();
-    fill(255);
-    rect(position.x+1,position.y+1,hitbox.x-2,hitbox.y-2);
+    fill(drawColor);
+    rect(position.x,position.y,hitbox.x,hitbox.y);
     float l = ((lightLevel > 10 ) ? 10 : ((lightLevel < 2) ? 2 : lightLevel));
     fill(0,255*(10-(l > 10 ? 10 : l))/10);
-    rect(position.x,position.y,hitbox.x,hitbox.y);
+    rect(position.x-1,position.y-1,hitbox.x+2,hitbox.y+2);
   }
   
   boolean collided()
