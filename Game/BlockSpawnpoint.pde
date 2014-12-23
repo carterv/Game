@@ -29,11 +29,11 @@ class BlockSpawnpoint extends Block
     if (type.equals("block.toggle.spawnpoint.base.inactive"))
     {
       float px = player.getLocation().x+player.getHitbox().x/2;
-      float py = player.getLocation().y+player.getHitbox().y-1;
+      float py = player.getLocation().y+player.getHitbox().y;
       if (px > position.x && px < position.x + drawSize && py > position.y && py < position.y + drawSize && !collided)
       {
         PVector oldSpawn = player.getSpawn();
-        player.setSpawn(new PVector(position.x,position.y-player.getHitbox().y));
+        player.setSpawn(new PVector(position.x,position.y-player.getHitbox().y+blockSize));
         int x = (int)(position.x/blockSize);
         int y = (int)(position.y/blockSize);
         this.toggleActive();

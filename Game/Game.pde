@@ -117,7 +117,7 @@ void keyPressed()
   }
   else if (key == 'r' || key == 'R')
   {
-    player.setHealth(100);
+    player.respawn();
   }
   else if (key == ' ')
   {

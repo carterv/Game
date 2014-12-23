@@ -197,7 +197,7 @@ class Player
   {
     velocity = new PVector(0,0);
     int x = (int)(spawn.x/blockSize);
-    int y = (int)(spawn.y/blockSize)+1;
+    int y = (int)(spawn.y/blockSize);
     if (blocks[x][y] == null || !blocks[x][y].getType().startsWith("block.toggle.spawnpoint.top"))
     {
       setSpawn(new PVector(width/2-blockSize/2,height-1.8*blockSize));
