@@ -61,7 +61,7 @@ class Player
           position.y -= yVel;
         }
         //fall damage
-        if (velocity.y > blockSize/2)
+        if (velocity.y > 2*blockSize/3)
         {
           setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
           drawColor = color(255,0,0);
@@ -215,6 +215,13 @@ class Player
   
   void setVSpeed(float s)
   {
+    //fall damage when jumping
+    if (s == -7 && velocity.y > 2*blockSize/3 && drawColor != color(255,0,0))
+    {
+      setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
+      drawColor = color(255,0,0);
+      colorStep = 0;
+    }
     velocity.y = s;
   }
   
