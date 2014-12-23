@@ -26,7 +26,7 @@ void setup()
   noStroke();
   blockSize = 20;
   playerHeight = 1.8*blockSize;
-  playerWidth = blockSize;
+  playerWidth = blockSize-2;
   backgroundColor = color(0,128);
   
   //input variables
@@ -118,9 +118,10 @@ void keyPressed()
   {
     int x = (int)(mouseX/blockSize);
     int y = (int)(mouseY/blockSize);
-    if (x >= 0 && y >= 0 && x < blocks.length-1 && y < blocks[0].length-1)
+    if (x >= 0 && y >= 0 && x <= blocks.length-1 && y < blocks[0].length-1)
     { 
-      if ((blocks[x][y] == null || !blocks[x][y].isSolid()) && (blocks[x][y+1] == null || !blocks[x][y+1].isSolid())) player.setLocation(new PVector(blockSize*x,blockSize*y));
+      //if ((blocks[x][y] == null || !blocks[x][y].isSolid()) && (blocks[x][y+1] == null || !blocks[x][y+1].isSolid())) player.setLocation(new PVector(blockSize*x,blockSize*y));
+      player.setLocation(new PVector(blockSize*x,blockSize*y));
     }
   }
 }
