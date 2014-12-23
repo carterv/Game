@@ -43,7 +43,7 @@ void setup()
       lights[i][j] = 10;
     }
   }
-  player = new Player(new PVector(width/2-blockSize/2,0));
+  player = new Player(new PVector(width/2-blockSize/2,height-1.8*blockSize));
   particles = new ArrayList<Emitter>();
   spriteManager = new SpriteManager();
   
@@ -80,8 +80,8 @@ void draw()
   //draw the blocks
   renderBlocks();
   
-  //draw the inventory
-  renderInventory();
+  //draw the UI
+  renderUI();
   
   timer += 1;
   timer %= 5;
@@ -113,6 +113,10 @@ void keyPressed()
   else if (key == 'd' || key == 'D')
   {
     keyDown = 2;
+  }
+  else if (key == 'r' || key == 'R')
+  {
+    player.setHealth(100);
   }
   else if (key == ' ')
   {
@@ -225,8 +229,9 @@ void refreshLights()
   }
 }
 
-void renderInventory()
+void renderUI()
 {
+  //inventory
   fill(0,128);
   rect(0,0,blockSize+4,(blockSize+4)*creativeInventory.size());
   fill(255,128);
@@ -235,6 +240,11 @@ void renderInventory()
   {
     b.draw();
   }
+  //health
+  fill(0);
+  rect(width-blockSize-4-1,0,blockSize+4,blockSize*4+4);
+  fill(200,0,0);
+  rect(width-blockSize-2-1,2+blockSize*4*(100-player.getHealth())/100,blockSize,blockSize*4*player.getHealth()/100);
 }
 
 void doInput()
@@ -259,6 +269,10 @@ void doInput()
           blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
           blocks[mx][my].check();
           blocks[mx][my].forceCheck();
+        }
+        else if (mouseX > location.x && mouseX < location.x + hitbox.x && mouseY > location.y && mouseY < location.y + hitbox.y)
+        {
+          player.setHealth(player.getHealth()-5);
         }
       }
     }

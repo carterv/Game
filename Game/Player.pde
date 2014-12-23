@@ -5,6 +5,8 @@ class Player
   float lightLevel;
   //movement vectors
   PVector position, velocity, acceleration;
+  //health
+  float health;
   
   Player(PVector location)
   {
@@ -14,6 +16,7 @@ class Player
     velocity = new PVector();
     acceleration = new PVector(0,0.5);
     lightLevel = 10;
+    health = 100; 
   }
   
   void update()
@@ -49,6 +52,8 @@ class Player
         {
           position.y -= yVel;
         }
+        //fall damage
+        if (velocity.y > blockSize/2) setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
         velocity.y = 0;
         //calculate friction
         int x = (int)(position.x/blockSize);
@@ -186,6 +191,13 @@ class Player
     setVSpeed(0);
   }
   
+  void setHealth(float h)
+  {
+    if (h > 100) health = 100;
+    else if (h < 0) health = 0;
+    else health = h;
+  }
+  
   PVector getLocation()
   {
     return position.get();
@@ -199,5 +211,10 @@ class Player
   PVector getHitbox()
   {
     return hitbox.get();
+  }
+  
+  float getHealth()
+  {
+    return health;    
   }
 }
