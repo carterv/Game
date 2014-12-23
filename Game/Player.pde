@@ -20,56 +20,77 @@ class Player
   {
     float xVel = velocity.x;
     float yVel = velocity.y;
-    //try horizontal movement
-    position.x += (collidedNonSolid() ? xVel/3 : xVel);
-    if (collided() && xVel != 0)
+    PVector start = position.get();
+    if (!collided())
     {
-      xVel = xVel/abs(xVel);
-      while (collided())
+      //try horizontal movement
+      position.x += (collidedNonSolid() ? xVel/3 : xVel);
+      if (collided() && xVel != 0)
       {
-        position.x -= xVel;
+        xVel = xVel/abs(xVel);
+        while (collided() && position.x != start.x)
+        {
+          position.x -= xVel;
+        }
+        velocity.x = 0;
       }
-      velocity.x = 0;
+      //try vertical movement
+      float friction = .25;
+      if (collidedNonSolid())
+      {
+        if (yVel > 0 && abs(yVel/3) >= .5) position.y += yVel/3;
+        else if (yVel < 0 && abs(yVel/3) >= .5) position.y += yVel/3;
+      }
+      else if (!collidedNonSolid() && abs(yVel) >= 1) position.y += yVel;
+      if (collided() && yVel != 0)
+      {
+        yVel = yVel/abs(yVel);
+        while (collided() && position.y != start.y)
+        {
+          position.y -= yVel;
+        }
+        velocity.y = 0;
+        //calculate friction
+        int x = (int)(position.x/blockSize);
+        int y = (int)((position.y + hitbox.y)/blockSize);
+        if (y+2 > blocks[0].length) friction = 3;
+        else if (blocks[x][y] != null && blocks[x+1][y] != null)
+        {
+          friction = (blocks[x][y].getFriction() + blocks[x+1][y].getFriction())/2;
+        }
+        else if (blocks[x][y] != null)
+        {
+          friction = blocks[x][y].getFriction();
+        }
+        else if (blocks[x+1][y] != null)
+        {
+          friction = blocks[x+1][y].getFriction();
+        }
+      }
+      //add block friction
+      if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
+      else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
+      if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
+      //add gravity
+      if (velocity.y > -10) velocity.add(acceleration);
     }
-    //try vertical movement
-    float friction = .25;
-    if (collidedNonSolid())
+    else
     {
-      if (yVel > 0 && abs(yVel/3) >= .5) position.y += yVel/3;
-      else if (yVel < 0 && abs(yVel/3) >= .5) position.y += yVel/3;
-    }
-    else if (!collidedNonSolid() && abs(yVel) >= 1) position.y += yVel;
-    if (collided() && yVel != 0)
-    {
-      yVel = yVel/abs(yVel);
-      while (collided())
+      int i = 1;
+      while(collided())
       {
-        position.y -= yVel;
-      }
-      velocity.y = 0;
-      //calculate friction
-      int x = (int)(position.x/blockSize);
-      int y = (int)((position.y + hitbox.y)/blockSize);
-      if (y+2 > blocks[0].length) friction = 3;
-      else if (blocks[x][y] != null && blocks[x+1][y] != null)
-      {
-        friction = (blocks[x][y].getFriction() + blocks[x+1][y].getFriction())/2;
-      }
-      else if (blocks[x][y] != null)
-      {
-        friction = blocks[x][y].getFriction();
-      }
-      else if (blocks[x+1][y] != null)
-      {
-        friction = blocks[x+1][y].getFriction();
+        position.y -= i;
+        if (!collided()) break;
+        position.y = start.y;
+        position.x -= i;
+        if (!collided()) break;
+        position.x = start.x;
+        position.x += i;
+        if (!collided()) break;
+        position.x = start.x;
+        i += 1;
       }
     }
-    //add block friction
-    if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
-    else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
-    if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
-    //add gravity
-    if (velocity.y > -10) velocity.add(acceleration);
     
     updateLightLevel();
     
