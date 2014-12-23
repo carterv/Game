@@ -4,7 +4,7 @@ class Player
   PVector hitbox;
   float lightLevel;
   //movement vectors
-  PVector position, velocity, acceleration;
+  PVector position, velocity, acceleration, spawn;
   //health
   float health;
   color drawColor;
@@ -13,8 +13,8 @@ class Player
   Player(PVector location)
   {
     hitbox = new PVector(playerWidth,playerHeight);
-    
     position = location.get();
+    setSpawn(location);
     velocity = new PVector();
     acceleration = new PVector(0,0.5);
     lightLevel = 10;
@@ -24,6 +24,11 @@ class Player
   
   void update()
   {
+    if (getHealth() == 0)
+    {
+      respawn();
+      return;
+    }
     float xVel = velocity.x;
     float yVel = velocity.y;
     PVector start = position.get();
@@ -85,7 +90,9 @@ class Player
       else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
       if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
       //add gravity
-      if (velocity.y > -10) velocity.add(acceleration);
+      velocity.add(acceleration);
+      //terminal velocity in water
+      if (velocity.y > 10 && collidedNonSolid()) velocity.y = 10;
     }
     else
     {
@@ -113,7 +120,6 @@ class Player
       //if (drawColor > color(255)) drawColor = color(255);
       colorStep += 1;
     }
-    this.draw();
   }
   
   void draw()
@@ -152,12 +158,12 @@ class Player
     int j2 = (int)((position.y + hitbox.y - 1)/blockSize);
     if (position.x < 0 || position.y < 0 || position.x + hitbox.x >= width || position.y + hitbox.y >= height) return false;
     if (i1 >= blocks.length || j2 >= blocks.length) return true;
-    return ((blocks[i0][j0] != null && !blocks[i0][j0].isSolid() && !blocks[i0][j0].getType().startsWith("emitter."))
-         || (blocks[i1][j0] != null && !blocks[i1][j0].isSolid() && !blocks[i1][j0].getType().startsWith("emitter."))
-         || (blocks[i0][j1] != null && !blocks[i0][j1].isSolid() && !blocks[i0][j1].getType().startsWith("emitter."))
-         || (blocks[i1][j1] != null && !blocks[i1][j1].isSolid() && !blocks[i1][j1].getType().startsWith("emitter."))
-         || (blocks[i0][j2] != null && !blocks[i0][j2].isSolid() && !blocks[i0][j2].getType().startsWith("emitter."))
-         || (blocks[i1][j2] != null && !blocks[i1][j2].isSolid() && !blocks[i1][j2].getType().startsWith("emitter.")));
+    return ((blocks[i0][j0] != null && !blocks[i0][j0].isSolid() && !blocks[i0][j0].getType().startsWith("emitter.") && !blocks[i0][j0].getType().startsWith("block.toggle."))
+         || (blocks[i1][j0] != null && !blocks[i1][j0].isSolid() && !blocks[i1][j0].getType().startsWith("emitter.") && !blocks[i1][j0].getType().startsWith("block.toggle."))
+         || (blocks[i0][j1] != null && !blocks[i0][j1].isSolid() && !blocks[i0][j1].getType().startsWith("emitter.") && !blocks[i0][j1].getType().startsWith("block.toggle."))
+         || (blocks[i1][j1] != null && !blocks[i1][j1].isSolid() && !blocks[i1][j1].getType().startsWith("emitter.") && !blocks[i1][j1].getType().startsWith("block.toggle."))
+         || (blocks[i0][j2] != null && !blocks[i0][j2].isSolid() && !blocks[i0][j2].getType().startsWith("emitter.") && !blocks[i0][j2].getType().startsWith("block.toggle."))
+         || (blocks[i1][j2] != null && !blocks[i1][j2].isSolid() && !blocks[i1][j2].getType().startsWith("emitter.") && !blocks[i1][j2].getType().startsWith("block.toggle.")));
   }
   
   void updateLightLevel()
@@ -187,6 +193,20 @@ class Player
     lightLevel = sum/count;
   }
   
+  void respawn()
+  {
+    velocity = new PVector(0,0);
+    int x = (int)(spawn.x/blockSize);
+    int y = (int)(spawn.y/blockSize)+1;
+    if (blocks[x][y] == null || !blocks[x][y].getType().startsWith("block.toggle.spawnpoint.top"))
+    {
+      setSpawn(new PVector(width/2-blockSize/2,height-1.8*blockSize));
+    }
+    position = spawn.get();
+    setHealth(100);
+    drawColor = color(255);
+  }
+  
   //setters and getters
   void setHSpeed(float s)
   {
@@ -212,6 +232,11 @@ class Player
     else health = h;
   }
   
+  void setSpawn(PVector loc)
+  {
+    spawn = loc.get();
+  }
+  
   PVector getLocation()
   {
     return position.get();
@@ -225,6 +250,11 @@ class Player
   PVector getHitbox()
   {
     return hitbox.get();
+  }
+  
+  PVector getSpawn()
+  {
+    return spawn.get();
   }
   
   float getHealth()

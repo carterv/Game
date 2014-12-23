@@ -2,6 +2,7 @@ abstract class Block
 {
   boolean solid;
   boolean transparent;
+  boolean earlyDraw;
   float friction;
   float drawSize;
   PImage sprite;
@@ -15,6 +16,7 @@ abstract class Block
     friction = 3;
     solid = true;
     transparent = false;
+    earlyDraw = false;
     type = "block.null";
     if (xpos%blockSize == 0 && ypos%blockSize == 0) updateLightLevel();
     else setLightLevel(10);
@@ -62,25 +64,6 @@ abstract class Block
     for (int i = 0; i < blocks[0].length; i++)
     {
       if (blocks[x][i] != null && i != y) blocks[x][i].updateLightLevel();
-      /*else if (blocks[x][i] == null) 
-      {
-        if (!canSeeSky(x,i))
-        {
-          int d = 10-getBlockDepth(x,i,true);
-          if (d < 1) d = 1;
-          lights[x][i] = d;
-        }
-        else if (canSeeSky(x,i) && !canSeeClearSky(x,i))
-        {
-          int d = 10-getBlockDepth(x,i,true);
-          if (d < 1) d = 1;
-          lights[x][i] = d;
-        }
-        else if (canSeeClearSky(x,i))
-        {
-          lights[x][i] = 10;
-        }
-      }*/
     }
   }
 
@@ -102,6 +85,11 @@ abstract class Block
   boolean isTransparent()
   {
     return !solid || transparent;
+  }
+  
+  boolean getEarlyDraw()
+  {
+    return earlyDraw;
   }
   
   PImage getSprite()

@@ -151,6 +151,60 @@ class SpriteManager
     sprites.put("block.sand",sprite.get());
     sprite = spriteBase.get();
     
+    //block.toggle.spawnpoint.base.active
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        if (i < w/6 || i > 5*w/6) sprite.pixels[j*w+i] = color(51,255,49);
+        else if (i < 2*w/6 || i > 4*w/6) sprite.pixels[j*w+i] = color(140,255,139);
+        else sprite.pixels[j*w+i] = color(217,255,216);
+        if (j > 2*w/3) sprite.pixels[j*w+i] = color(180);
+      }
+    }
+    sprites.put("block.toggle.spawnpoint.base.active",sprite.get());
+    sprite = spriteBase.get();
+    
+    //block.toggle.spawnpoint.base.inactive
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        if (i < w/6 || i > 5*w/6) sprite.pixels[j*w+i] = color(49,153,255);
+        else if (i < 2*w/6 || i > 4*w/6) sprite.pixels[j*w+i] = color(139,198,255);
+        else sprite.pixels[j*w+i] = color(216,236,255);
+        if (j > 2*w/3) sprite.pixels[j*w+i] = color(180);
+      }
+    }
+    sprites.put("block.toggle.spawnpoint.base.inactive",sprite.get());
+    sprite = spriteBase.get();
+    
+    //block.toggle.spawnpoint.top.active
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        if (i < w/6 || i > 5*w/6) sprite.pixels[j*w+i] = color(51,255,49);
+        else if (i < 2*w/6 || i > 4*w/6) sprite.pixels[j*w+i] = color(140,255,139);
+        else sprite.pixels[j*w+i] = color(217,255,216);
+      }
+    }
+    sprites.put("block.toggle.spawnpoint.top.active",sprite.get());
+    sprite = spriteBase.get();
+    
+    //block.toggle.spawnpoint.top.inactive
+    for (int i = 0; i < w; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
+        if (i < w/6 || i > 5*w/6) sprite.pixels[j*w+i] = color(49,153,255);
+        else if (i < 2*w/6 || i > 4*w/6) sprite.pixels[j*w+i] = color(139,198,255);
+        else sprite.pixels[j*w+i] = color(216,236,255);
+      }
+    }
+    sprites.put("block.toggle.spawnpoint.top.inactive",sprite.get());
+    sprite = spriteBase.get();
+    
     //block.stone
     for (int i = 0; i < w; i++)
     {

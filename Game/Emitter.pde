@@ -14,6 +14,7 @@ abstract class Emitter extends Block
     type = "emitter.null";
     friction = 0;
     solid = false;
+    earlyDraw = true;
   }
 
   Emitter(int num, color c)

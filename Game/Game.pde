@@ -3,7 +3,7 @@ Block[][] blocks;
 int[][] lights;
 ArrayList<Block> creativeInventory;
 ArrayList<Block> survivalInventory;
-ArrayList<Emitter> particles;
+ArrayList<Block> earlyDraw;
 Player player;
 SpriteManager spriteManager;
 int timer;
@@ -44,7 +44,7 @@ void setup()
     }
   }
   player = new Player(new PVector(width/2-blockSize/2,height-1.8*blockSize));
-  particles = new ArrayList<Emitter>();
+  earlyDraw = new ArrayList<Block>();
   spriteManager = new SpriteManager();
   
   //inventory
@@ -61,6 +61,7 @@ void setup()
   creativeInventory.add(newBlock("fluid.water",2,7*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("block.tnt",2,8*(blockSize+4)+2,1));
   creativeInventory.add(newBlock("block.lamp",2,9*(blockSize+4)+2,1));
+  creativeInventory.add(newBlock("block.toggle.spawnpoint.base",2,10*(blockSize+4)+2,1));
 }
 
 void draw()
@@ -69,7 +70,7 @@ void draw()
   rect(0,0,width,height);
   
   //draw and update the player
-  player.update();
+  renderPlayer();
   
   //check input
   doInput();
@@ -157,21 +158,16 @@ void keyReleased()
 
 void renderBlocks()
 {
-  for (Emitter e : particles)
-  {
-    e.draw();
-    e.update();
-  }
-  particles = new ArrayList<Emitter>();
+  earlyDraw = new ArrayList<Block>();
   for (int i = 0; i < blocks.length; i++)
   {
     for (int j = 0; j < blocks[i].length; j++)
     {
       if (blocks[i][j] != null) 
       {
-        if (blocks[i][j].getType().startsWith("emitter."))
+        if (blocks[i][j].getEarlyDraw())
         {
-          particles.add((Emitter)blocks[i][j]);
+          earlyDraw.add(blocks[i][j]);
         }
         else
         {
@@ -181,6 +177,17 @@ void renderBlocks()
       }
     }
   }
+}
+
+void renderPlayer()
+{
+  for (Block b : earlyDraw)
+  {
+    b.draw();
+    b.update();
+  }
+  player.update();
+  player.draw();
 }
 
 void renderLights()
@@ -267,8 +274,8 @@ void doInput()
         if (!((i0 == mx && (my == j0 || my == j1 || my == j2)) || (i1 == mx && (my == j0 || my == j1 || my == j2))))
         {
           blocks[mx][my] = newBlock(creativeInventory.get((int)inventoryIndex).getType(),mx*blockSize,my*blockSize,1);
-          blocks[mx][my].check();
           blocks[mx][my].forceCheck();
+          if (blocks[mx][my] != null) blocks[mx][my].check();
         }
       }
     }
@@ -310,7 +317,7 @@ void doInput()
       player.setVSpeed(-7);
     }
     //check for non-solid blocks
-    else if ((blocks[px][py] != null && !blocks[px][py].isSolid() && !blocks[px][py].getType().startsWith("emitter.")) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid() && !blocks[px][py+1].getType().startsWith("emitter."))) 
+    else if ((blocks[px][py] != null && !blocks[px][py].isSolid() && !blocks[px][py].getType().startsWith("emitter.") && !blocks[px][py].getType().startsWith("block.toggle.")) || (blocks[px][py+1] != null && !blocks[px][py+1].isSolid() && !blocks[px][py+1].getType().startsWith("emitter.") && !blocks[px][py+1].getType().startsWith("block.toggle."))) 
     {
       player.setVSpeed(-7);
     }
@@ -322,11 +329,11 @@ void doInput()
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid() && !blocks[px+1][py].getType().startsWith("emitter.")))
+      else if ((blocks[px+1][py] != null && !blocks[px+1][py].isSolid() && !blocks[px+1][py].getType().startsWith("emitter.") && !blocks[px+1][py].getType().startsWith("block.toggle.")))
       {
         player.setVSpeed(-7);
       }
-      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid() && !blocks[px+1][py+1].getType().startsWith("emitter.")))
+      else if ((blocks[px+1][py+1] != null && !blocks[px+1][py+1].isSolid() && !blocks[px+1][py+1].getType().startsWith("emitter.") && !blocks[px+1][py+1].getType().startsWith("block.toggle.")))
       {
         player.setVSpeed(-7);
       }
@@ -384,6 +391,8 @@ Block newBlock(String type, float x, float y, float scale)
   else if (type.equals("block.sand")) return new BlockSand(x,y,scale);
   else if (type.equals("block.tnt")) return new BlockTNT(x,y,scale);
   else if (type.equals("block.lamp")) return new BlockLamp(x,y,scale);
+  else if (type.startsWith("block.toggle.spawnpoint.top")) return new BlockSpawnpoint(x,y,scale,false);
+  else if (type.startsWith("block.toggle.spawnpoint.base")) return new BlockSpawnpoint(x,y,scale,true);
   else if (type.equals("fluid.water")) return new FluidWater(x,y,scale);
   else return null;
 }
