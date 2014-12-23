@@ -17,12 +17,18 @@ class ParticleBlockDestroy extends Particle
     //update position
     float xVel = velocity.x;
     float yVel = velocity.y;
+    PVector start = position.get();
+    if (collided())
+    {
+      life = 0;
+      return;
+    }
     //x-axis collision detection
     position.x += xVel;
     if (collided())
     {
       float d = abs(xVel)/xVel;
-      while (collided())
+      while (collided() && position.x != start.x)
       {
         position.x -= d;
       }
@@ -33,7 +39,7 @@ class ParticleBlockDestroy extends Particle
     if (collided())
     {
       float d = abs(yVel)/yVel;
-      while (collided())
+      while (collided() && position.y != start.y)
       {
         position.y -= d;
       }
@@ -43,7 +49,8 @@ class ParticleBlockDestroy extends Particle
     //gravity
     velocity.y += 0.05;
     //update life countdown
-    life -= 1;
+    if (collided()) life = 0;
+    else life -= 1;
   }
   
   void draw()
