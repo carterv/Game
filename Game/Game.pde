@@ -248,9 +248,9 @@ void renderUI()
     b.draw();
   }
   //health
-  fill(0);
+  fill(0,128);
   rect(width-blockSize-4-1,0,blockSize+4,blockSize*4+4);
-  fill(200,0,0);
+  fill(200,0,0,128);
   rect(width-blockSize-2-1,2+blockSize*4*(100-player.getHealth())/100,blockSize,blockSize*4*player.getHealth()/100);
 }
 
