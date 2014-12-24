@@ -72,7 +72,7 @@ class Player
         int x = (int)(position.x/blockSize);
         int y = (int)((position.y + hitbox.y)/blockSize);
         if (y+2 > blocks[0].length) friction = 3;
-        else if (blocks[x][y] != null && blocks[x+1][y] != null)
+        else if (x+1 < blocks.length && blocks[x][y] != null && blocks[x+1][y] != null)
         {
           friction = (blocks[x][y].getFriction() + blocks[x+1][y].getFriction())/2;
         }
@@ -80,7 +80,7 @@ class Player
         {
           friction = blocks[x][y].getFriction();
         }
-        else if (blocks[x+1][y] != null)
+        else if (x+1 < blocks.length && blocks[x+1][y] != null)
         {
           friction = blocks[x+1][y].getFriction();
         }
