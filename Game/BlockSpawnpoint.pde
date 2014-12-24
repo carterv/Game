@@ -52,6 +52,16 @@ class BlockSpawnpoint extends Block
         collided = false;
       }
     }
+    else if (type.startsWith("block.toggle.spawnpoint.top."))
+    {
+      int x = (int)(position.x/blockSize);
+      int y = (int)(position.y/blockSize);
+      if (blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base."))
+      {
+        blocks[x][y] = new EmitterBlockDestroy(x*blockSize,y*blockSize,1,sprite,getLightLevel());
+        forceCheck();
+      }
+    }
   }
   
   void check()
@@ -63,9 +73,9 @@ class BlockSpawnpoint extends Block
     {
       int sx = (int)(player.getSpawn().x/blockSize);
       int sy = (int)(player.getSpawn().y/blockSize)+1;
-      if (type.startsWith("block.toggle.spawnpoint.base"))
+      if (type.startsWith("block.toggle.spawnpoint.base."))
       {
-        if (y <= 0 || (blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("block.toggle.spawnpoint.top") && blocks[x][y-1].isSolid()))
+        if (y <= 0 || (blocks[x][y-1] != null && !blocks[x][y-1].getType().startsWith("block.toggle.spawnpoint.top.") && blocks[x][y-1].isSolid()))
         {
           blocks[x][y] = null;
           forceCheck();
@@ -73,16 +83,17 @@ class BlockSpawnpoint extends Block
         else
         {
           blocks[x][y-1] = newBlock("block.toggle.spawnpoint.top", position.x, position.y-blockSize, drawSize/blockSize);
+          blocks[x][y-1].check();
         }
       }
-      else if (type.startsWith("block.toggle.spawnpoint.top"))
+      else if (type.startsWith("block.toggle.spawnpoint.top."))
       {
         if (x == sx && y == sy)
          {
-           type = "block.toggle.spawnpoint.top.active";
+           type = "block.toggle.spawnpoint.top.active.";
            sprite = spriteManager.getSprite(type,drawSize);
          }
-        if (y == (int)(height/blockSize)-1 || blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base"))
+        if (y == (int)(height/blockSize)-1 || blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base."))
         {
           blocks[x][y] = null;
           forceCheck();
@@ -92,17 +103,17 @@ class BlockSpawnpoint extends Block
     }
     else
     {
-      if (type.startsWith("block.toggle.spawnpoint.base"))
+      if (type.startsWith("block.toggle.spawnpoint.base."))
       {
-        if (blocks[x][y-1] == null || !blocks[x][y-1].getType().startsWith("block.toggle.spawnpoint.top"))
+        if (blocks[x][y-1] == null || !blocks[x][y-1].getType().startsWith("block.toggle.spawnpoint.top."))
         {
           blocks[x][y] = new EmitterBlockDestroy(x*blockSize,y*blockSize,1,sprite,getLightLevel());
           forceCheck();
         }
       }
-      else if (type.startsWith("block.toggle.spawnpoint.top"))
+      else if (type.startsWith("block.toggle.spawnpoint.top."))
       {
-        if (blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base"))
+        if (blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base."))
         {
           blocks[x][y] = new EmitterBlockDestroy(x*blockSize,y*blockSize,1,sprite,getLightLevel());
           forceCheck();
