@@ -25,8 +25,6 @@ void setup()
   //draw options
   noStroke();
   blockSize = 20;
-  playerHeight = 1.8*blockSize;
-  playerWidth = blockSize-2;
   backgroundColor = color(0,128);
   
   //input variables
@@ -43,7 +41,7 @@ void setup()
       lights[i][j] = 10;
     }
   }
-  player = new Player(new PVector(width/2-blockSize/2,height-1.8*blockSize));
+  player = new Player(new PVector(width/2-blockSize/2,height-1.8*blockSize), new PVector(blockSize-2,1.8*blockSize));
   earlyDraw = new ArrayList<Block>();
   spriteManager = new SpriteManager();
   

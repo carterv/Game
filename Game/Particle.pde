@@ -19,7 +19,7 @@ abstract class Particle
   void update()
   {
     //gravity
-    velocity.y += 0.05;
+    velocity.y += 0.5;
     //update position
     position.add(velocity);
     //update life countdown

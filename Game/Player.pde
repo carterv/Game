@@ -1,22 +1,17 @@
-class Player
+class Player extends Entity
 {
   //draw variables
-  PVector hitbox;
   float lightLevel;
-  //movement vectors
-  PVector position, velocity, acceleration, spawn;
+  //spawn
+  PVector spawn;
   //health
-  float health;
   color drawColor;
   int colorStep;
   
-  Player(PVector location)
+  Player(PVector location, PVector hb)
   {
-    hitbox = new PVector(playerWidth,playerHeight);
-    position = location.get();
+    super(location,hb);
     setSpawn(location);
-    velocity = new PVector();
-    acceleration = new PVector(0,0.5);
     lightLevel = 10;
     health = 100;
     drawColor = color(255);
@@ -29,90 +24,8 @@ class Player
       respawn();
       return;
     }
-    float xVel = velocity.x;
-    float yVel = velocity.y;
-    PVector start = position.get();
-    if (!collided())
-    {
-      //try horizontal movement
-      position.x += (collidedNonSolid() ? xVel/3 : xVel);
-      if (collided() && xVel != 0)
-      {
-        xVel = xVel/abs(xVel);
-        while (collided() && position.x != start.x)
-        {
-          position.x -= xVel;
-        }
-        velocity.x = 0;
-      }
-      //try vertical movement
-      float friction = .25;
-      if (collidedNonSolid())
-      {
-        if (yVel > 0 && abs(yVel/3) >= .5) position.y += yVel/3;
-        else if (yVel < 0 && abs(yVel/3) >= .5) position.y += yVel/3;
-      }
-      else if (!collidedNonSolid() && abs(yVel) >= 1) position.y += yVel;
-      if (collided() && yVel != 0)
-      {
-        yVel = yVel/abs(yVel);
-        while (collided() && position.y != start.y)
-        {
-          position.y -= yVel;
-        }
-        //fall damage
-        if (velocity.y > 2*blockSize/3)
-        {
-          setHealth(getHealth()-pow(8,(2*velocity.y/blockSize)));
-          drawColor = color(255,0,0);
-          colorStep = 0;
-        }
-        velocity.y = 0;
-        //calculate friction
-        int x = (int)(position.x/blockSize);
-        int y = (int)((position.y + hitbox.y)/blockSize);
-        if (y+2 > blocks[0].length) friction = 3;
-        else if (x+1 < blocks.length && blocks[x][y] != null && blocks[x+1][y] != null)
-        {
-          friction = (blocks[x][y].getFriction() + blocks[x+1][y].getFriction())/2;
-        }
-        else if (blocks[x][y] != null)
-        {
-          friction = blocks[x][y].getFriction();
-        }
-        else if (x+1 < blocks.length && blocks[x+1][y] != null)
-        {
-          friction = blocks[x+1][y].getFriction();
-        }
-      }
-      //add block friction
-      if (velocity.x > 0) velocity.x = (velocity.x - friction > 0) ? velocity.x - friction : 0;
-      else if (velocity.x < 0) velocity.x = (velocity.x + friction < 0) ? velocity.x + friction : 0; 
-      if (velocity.y > 0 && collidedNonSolid()) velocity.y = (velocity.y - friction > 0) ? velocity.y-friction : 0;
-      //add gravity
-      velocity.add(acceleration);
-      //terminal velocity in water
-      if (velocity.y > 10 && collidedNonSolid()) velocity.y = 10;
-    }
-    else
-    {
-      int i = 1;
-      while(collided())
-      {
-        position.y -= i;
-        if (!collided()) break;
-        position.y = start.y;
-        position.x -= i;
-        if (!collided()) break;
-        position.x = start.x;
-        position.x += i;
-        if (!collided()) break;
-        position.x = start.x;
-        i += 1;
-      }
-    }
     
-    updateLightLevel();
+    super.update();
     
     if (drawColor != color(255))
     {
@@ -207,12 +120,6 @@ class Player
     drawColor = color(255);
   }
   
-  //setters and getters
-  void setHSpeed(float s)
-  {
-    velocity.x = s;
-  }
-  
   void setVSpeed(float s)
   {
     //fall damage when jumping
@@ -222,18 +129,16 @@ class Player
       drawColor = color(255,0,0);
       colorStep = 0;
     }
-    velocity.y = s;
-  }
-  
-  void setLocation(PVector loc)
-  {
-    position = loc.get();
-    setHSpeed(0);
-    setVSpeed(0);
+    super.setVSpeed(s);
   }
   
   void setHealth(float h)
   {
+    if (h < health)
+    {
+      drawColor = color(255,0,0);
+      colorStep = 0;
+    }
     if (h > 100) health = 100;
     else if (h < 0) health = 0;
     else health = h;
@@ -244,28 +149,8 @@ class Player
     spawn = loc.get();
   }
   
-  PVector getLocation()
-  {
-    return position.get();
-  }
-  
-  PVector getSpeed()
-  {
-    return velocity.get();
-  }
-  
-  PVector getHitbox()
-  {
-    return hitbox.get();
-  }
-  
   PVector getSpawn()
   {
     return spawn.get();
-  }
-  
-  float getHealth()
-  {
-    return health;    
   }
 }
