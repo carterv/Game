@@ -222,7 +222,7 @@ void refreshLights()
           if (d > 9) d = 9;
           d = 10-d+1;
         }
-        else if (j > 0 && lights[i][j-1]-1 > d)
+        if (j > 0 && lights[i][j-1]-1 > d)
         {
           d = lights[i][j-1]-1;
         }
