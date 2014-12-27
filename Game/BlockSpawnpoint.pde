@@ -32,7 +32,6 @@ class BlockSpawnpoint extends Block
       float py = player.getLocation().y+player.getHitbox().y;
       if (px > position.x && px < position.x + drawSize && py > position.y && py < position.y + drawSize+1 && !collided)
       {
-        print("a");
         PVector oldSpawn = player.getSpawn();
         player.setSpawn(new PVector(position.x,position.y-player.getHitbox().y+blockSize));
         int x = (int)(position.x/blockSize);
@@ -91,7 +90,7 @@ class BlockSpawnpoint extends Block
       {
         if (x == sx && y == sy)
          {
-           type = "block.toggle.spawnpoint.top.active.";
+           type = "block.toggle.spawnpoint.top.active";
            sprite = spriteManager.getSprite(type,drawSize);
          }
         if (y == (int)(height/blockSize)-1 || blocks[x][y+1] == null || !blocks[x][y+1].getType().startsWith("block.toggle.spawnpoint.base."))
