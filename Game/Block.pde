@@ -123,13 +123,13 @@ abstract class Block
       if (d > 9) d = 9;
       d = 10-d+1;
     }
-    else if ((y > 0) && lights[x][y-1]-1 > d)
+    if (y > 0 && lights[x][y-1]-1 > d)
     {
       d = lights[x][y-1]-1;
     }
-    if ((x > 0) && lights[x-1][y]-2 > d) d = lights[x-1][y]-2;
-    if ((x < lights.length-1) && lights[x+1][y]-1 > d) d = lights[x+1][y]-2;
-    if ((y < lights[0].length-1) && lights[x][y+1]-1 > d) d = lights[x][y+1]-2;
+    if (x > 0 && lights[x-1][y]-1 > d) d = lights[x-1][y]-1;
+    if (x < lights.length-1 && lights[x+1][y]-1 > d) d = lights[x+1][y]-1;
+    if (y < lights[0].length-1 && lights[x][y+1]-1 > d) d = lights[x][y+1]-1;
     if (d < 1) d = 1;
     setLightLevel(d);
   }

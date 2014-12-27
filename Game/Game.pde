@@ -213,7 +213,7 @@ void refreshLights()
     for (int j = 0; j < blocks[0].length; j++)
     {
       if (blocks[i][j] != null) blocks[i][j].updateLightLevel();
-      else// if (!canSeeClearSky(i,j))
+      else
       {
         int d = 0;
         if (canSeeSky(i,j))
@@ -222,13 +222,13 @@ void refreshLights()
           if (d > 9) d = 9;
           d = 10-d+1;
         }
-        else if ((j > 0) && lights[i][j-1]-1 > d)// && canSeeSky(i,j))
+        else if (j > 0 && lights[i][j-1]-1 > d)
         {
           d = lights[i][j-1]-1;
         }
-        if ((i > 0) && lights[i-1][j]-1 > d) d = lights[i-1][j]-1;
-        if ((i < lights.length-1) && lights[i+1][j]-1 > d) d = lights[i+1][j]-1;
-        if ((j < lights[0].length-1) && lights[i][j+1]-1 > d) d = lights[i][j+1]-1;
+        if (i > 0 && lights[i-1][j]-1 > d) d = lights[i-1][j]-1;
+        if (i < lights.length-1 && lights[i+1][j]-1 > d) d = lights[i+1][j]-1;
+        if (j < lights[0].length-1 && lights[i][j+1]-1 > d) d = lights[i][j+1]-1;
         if (d < 1) d = 1;
         lights[i][j] = d;
       }
