@@ -30,8 +30,9 @@ class BlockSpawnpoint extends Block
     {
       float px = player.getLocation().x+player.getHitbox().x/2;
       float py = player.getLocation().y+player.getHitbox().y;
-      if (px > position.x && px < position.x + drawSize && py > position.y && py < position.y + drawSize && !collided)
+      if (px > position.x && px < position.x + drawSize && py > position.y && py < position.y + drawSize+1 && !collided)
       {
+        print("a");
         PVector oldSpawn = player.getSpawn();
         player.setSpawn(new PVector(position.x,position.y-player.getHitbox().y+blockSize));
         int x = (int)(position.x/blockSize);
