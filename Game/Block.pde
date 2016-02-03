@@ -100,7 +100,10 @@ abstract class Block
   
   int getLightLevel()
   {
-    return lights[(int)(position.x/blockSize)][(int)(position.y/blockSize)];
+    if (position.x%blockSize == 0 && position.y % blockSize == 0)
+      return lights[(int)(position.x/blockSize)][(int)(position.y/blockSize)];
+    else
+      return 10;
   }
   
   void setLightLevel(int i)
@@ -134,4 +137,3 @@ abstract class Block
     setLightLevel(d);
   }
 }
-
